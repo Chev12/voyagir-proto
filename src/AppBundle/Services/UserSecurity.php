@@ -39,6 +39,12 @@ class UserSecurity {
             }
         }
         return $found;
+        /* Code à intégrer :
+            $ownerConnected = $this->get('utils.user_security')->verifyOwnership($_id);
+            if(!$ownerConnected){
+                throw $this->createAccessDeniedException();
+            }
+         */
     }
     
     public function __construct(TokenStorage $tokenStorage, AuthorizationChecker $authChecker) {

@@ -55,10 +55,6 @@ class EstablishmentVoter extends Voter
 
     private function canEdit(Establishment $etb, User $user)
     {
-        /*$logger = $this->get('logger');
-        $logger->debug("Owner : ".$etb->getUserOwner());
-        $logger->debug("User : ".$user);
-        return $user === $etb->getUserOwner();*/
-        RETURN TRUE;
+        return $user === $etb->getUserOwner();
     }
 }

@@ -7,6 +7,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use AppBundle\Entity\Establishment;
 
 class EstablishmentController extends Controller
@@ -44,23 +45,23 @@ class EstablishmentController extends Controller
      */
     public function manageAction( Request $request, $_id = 0)
     {   
-        $ownerConnected = $this->get('utils.user_security')->verifyOwnership($_id);
-        if(!$ownerConnected){
-            throw $this->createAccessDeniedException();
-        }
         $em = $this->getDoctrine()->getManager();
         $rep = $em->getRepository('AppBundle:Establishment');
         
         // Getting an existing establishment or a new one
         $establishment = $this->getEstablishment($rep, $_id);
+        // Verify that the user has access to the establishment
+        if($_id != 0) {
+            $this->denyAccessUnlessGranted('edit', $establishment);
+        }
         
         // Creating form
         $save_label = $this->get('translator')->trans("establishment.manage.save");
         $form = $this->createFormBuilder($establishment)
-            ->add('name',       TextType)
-            ->add('description',TextType)
-            ->add('adress',     TextType)
-            ->add('save',       SubmitType, array('label' => $save_label))
+            ->add('name',       TextType::class)
+            ->add('description',TextType::class)
+            ->add('adress',     TextType::class)
+            ->add('save',       SubmitType::class, array('label' => $save_label))
             ->getForm();
 
         $form->handleRequest($request);
@@ -91,7 +92,8 @@ class EstablishmentController extends Controller
             $id = $request->get("id");
             $establishment = $em->getRepository("AppBundle:Establishment")
                                 ->find($id);
-            $this->denyAccessUnlessGranted('ROLE_USER', $establishment);
+            // Verify that the user has access to the establishment
+            $this->denyAccessUnlessGranted('edit', $establishment);
             $em->remove($establishment);
             $em->flush();
         }

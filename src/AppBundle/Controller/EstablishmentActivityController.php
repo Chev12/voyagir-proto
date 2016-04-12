@@ -6,6 +6,10 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\EstablishmentActivity;
+use Symfony\Component\Form\Extension\Core\Type\TextType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use Symfony\Component\Form\Extension\Core\Type\EntityType;
+use \Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class EstablishmentActivityController extends Controller
 {
@@ -54,12 +58,14 @@ class EstablishmentActivityController extends Controller
         // Creating form
         $save_label = $this->get('translator')->trans("establishment.manage.save");
         $form = $this->createFormBuilder($establishmentActivity)
-            ->add('description','text')
-            ->add('price',      'integer')
-            ->add('activity_type','entity', array(  
-                                    'class' => 'AppBundle:ActivityType',
-                                    'choice_label' => 'name'))
-            ->add('save',       'submit', array('label' => $save_label))
+            ->add('description',    TextType::class)
+            ->add('price',          IntegerType::class)
+            ->add('activity_type',  EntityType::class,
+                                    array(  
+                                        'class' => 'AppBundle:ActivityType',
+                                        'choice_label' => 'name'))
+            ->add('save',           SubmitType::class,
+                                    array('label' => $save_label))
             ->getForm();
 
         $form->handleRequest($request);
