@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        
+        <title>{% block title %}Welcome!{% endblock %}</title>
+        
+        <!-- Autre -->
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        
+        <!-- Importations -->
+        <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js" ></script>
+        <script type="text/javascript" src="{{ asset('js/main.js') }}" ></script>
+        <link href="https://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css"
+              rel="stylesheet" type="text/css" />
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.1.0/css/font-awesome.min.css"
+              rel="stylesheet" type="text/css" />
+        <link href="https://fonts.googleapis.com/css?family=Open+Sans:400,300,600|Sue+Ellen+Francisco"
+              rel="stylesheet" type="text/css" />
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" />
+        
+        <link rel="icon" type="image/x-icon" href="{{ asset('favicon.ico') }}" />
+    </head>
+    <body>
+        {% include "banner.html.twig" %}
+        
+        {% include "menu.html.twig" %}
+     
+        <div id="page">
+            <a href="javascript:;" class="menu_btn"></a>
+            {% block body %}{% endblock %}
+        </div>  
+        {% block javascripts %}{% endblock %}
+    </body>
+</html>

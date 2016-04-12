@@ -1,0 +1,170 @@
+/* Style.css */
+body{ 
+    margin:0px;
+    margin-top: 55px;
+    background: #f8f8f0;
+}
+
+a {
+    text-decoration: none;
+    color:#444485;
+}
+
+.logo {
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width: 80%;
+    max-width: 800px;
+    min-width: 250px;
+}
+
+.icon {
+    display: inline-block;
+    height: 50px;
+    background-size: 100%;
+    background-repeat: no-repeat;
+    position: relative;
+    top: 15px;
+}
+
+#page{
+    margin-left: 60px;
+}
+
+/* Banner */
+#banner{
+    color: white;
+    text-align: right;
+    height: 50px;
+    background-color: #33ccaf;
+    padding: 5px 5% 0% 5%;
+    position: fixed;
+    top : 0px;
+    width: 100%;
+    z-index: 1;
+    font-family: 'Sue Ellen Francisco', cursive;
+    font-size: 25px;
+    overflow: hidden;
+}
+#banner .logo{
+    width: 5%;
+    display: inline-block;
+    float: left;
+    position: relative;
+    top: -25px;
+}
+
+#banner a{
+    color: #444485;
+    margin: 0% 0.5% 0% 0%;
+}
+
+#banner a:hover{
+    text-decoration: none;
+    color: #ebc84c;
+}
+
+#banner .icon {
+    width: 27px;
+    height: 22px;
+    top: 2px;
+}
+
+#banner .icon.facebook{
+    top: 3px;
+    background-image: url('../img/facebook-15b.png');
+}
+
+#banner .icon.facebook:hover {
+    background-image: url('../img/facebook-j.png');
+}
+    
+#banner .icon.twitter {
+    background-image: url('../img/twitter-15b.png');
+}
+
+#banner .icon.twitter:hover {
+    background-image: url('../img/twitter-j.png');
+}
+
+#banner .flag {
+    width: 30px;
+    height: 33px;
+    top: 2px;
+}
+
+/** Menu **/
+.menu_btn {
+    background: #33ccaf url(../img/menu_bg.png) center center no-repeat;
+    display: block;
+    height: 42px;
+    width: 42px;
+    position: absolute;
+    top: 50px;
+    left: 0px;
+}
+ 
+#menu {
+    height:100%;
+    position:fixed;
+    background:#33ccaf;
+    top:50px;
+    bottom:0;
+    height:100%;
+    width:240px;
+    left:-240px;
+    z-index:9999;
+}
+ 
+#menu ul {
+    padding:0;
+    margin:0;
+    list-style:none;
+    color:white;
+}
+ 
+#menu ul li {
+    height:47px;
+    padding-left:30px;
+    line-height:47px;
+    border-bottom:1px solid #d39b33;
+}
+ 
+#menu ul li.active {
+    background:#fbce52; 
+}
+ 
+#menu ul li:hover {
+    background:#fbce52;     
+}
+ 
+#menu ul li a {
+    color:white;
+    text-decoration:none;
+    font-family: 'Open Sans', sans-serif;
+    font-size:16px;
+    display:block;
+}
+ 
+.close {
+    display:block;
+    background:#373737 url(../img/croix.png) center center no-repeat;
+    height:47px;
+    width:47px;
+    position:absolute;
+    top:0;
+    right:-47px; 
+}
+
+
+/* 480px */
+@media (max-width: 480px){
+    
+}
+
+
+/* 768px */
+@media (max-width: 768px) {
+    
+}

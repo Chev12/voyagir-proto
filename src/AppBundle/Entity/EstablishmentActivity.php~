@@ -1,0 +1,64 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * EstablishmentActivity
+ *
+ * @ORM\Table(name="establishment_activity", uniqueConstraints={@ORM\UniqueConstraint(name="id_establishment_activity", columns={"id_establishment", "id_activity_type", "id"})}, indexes={@ORM\Index(name="ind_establishment_activity", columns={"id_activity_type", "id_establishment"}), @ORM\Index(name="IDX_E70DFA6865C7608B", columns={"id_establishment"}), @ORM\Index(name="IDX_E70DFA6831325DDE", columns={"id_activity_type"})})
+ * @ORM\Entity
+ */
+class EstablishmentActivity
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", length=16777215, nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="price", type="integer", nullable=true)
+     */
+    private $price;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+
+    /**
+     * @var \AppBundle\Entity\ActivityType
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ActivityType")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_activity_type", referencedColumnName="id")
+     * })
+     */
+    private $idActivityType;
+
+    /**
+     * @var \AppBundle\Entity\Establishment
+     *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Establishment")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_establishment", referencedColumnName="id")
+     * })
+     */
+    private $idEstablishment;
+
+
+}
+

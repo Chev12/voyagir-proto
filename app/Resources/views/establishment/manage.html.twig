@@ -1,0 +1,47 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {% if establishment.id != null %}
+        {{ establishment.name }} - Mise à jour
+    {% else %}
+        Nouvel établissement
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div style="width: 60%">
+        <h2> Informations générales </h2>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+    {% if establishment.id != null %}
+    <div>
+        <a href="{{ path("etb_activity_new", { '_idEtb' : establishment.id }) }}"> Proposer une activité </a>
+    </div>
+    <div>
+        <h2> Activités </h2>
+        <table class="table" style="width: 30%;">
+            <tr>
+                <th>Type</th>
+                <th>Description</th>
+                <th>Prix</th>
+                <th>Actions</th>
+            </tr>
+            {% for activity in establishment.activities %}
+                <tr>
+                    <td>{{ activity.activityType.name }}</td>
+                    <td>{{ activity.description }}</td>
+                    <td>{{ activity.price }}</td>
+                    <td>
+                        <form action="{{ path("etb_activity_delete", { '_idEtb' : establishment.id }) }}">
+                            <input type="hidden" name="idAct" value="{{ activity.id }}" />
+                            <input type="submit" value="Supprimer" class="btn-primary" />
+                        </form>
+                <tr>
+            {% endfor %}
+        </table>
+    </div>
+    {% endif %} 
+    <div>
+        <span><strong>Owner : </strong> {{ establishment.userOwner.id }} - {{ establishment.userOwner.username }} </span>
+    </div>
+{% endblock %}

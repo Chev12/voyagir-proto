@@ -1,0 +1,35 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {{ establishment.name }}
+{% endblock %}
+
+{% block body %}
+    
+    <div style=" height: 270px;">
+        <div style="float: left; border: 1px black solid; width: 300px; height: 250px; margin: 10px; background: url('{{ asset('img/1.jpg') }}'); background-size: cover">
+        <!--<div style="height: 400px; background: url('{{ asset('img/1.jpg') }}') no-repeat; background-size: cover; background-position: center center">-->
+            <center>{{ 'establishment.picture'|trans}}</center>
+        </div>
+        <div>
+            <h1>{{ establishment.name }}</h1>
+            {% if ownerConnected %}
+                <a href="{{ path("etb_manage_update", { '_id' : establishment.id }) }}">{{ 'establishment.manage.link'|trans}}</a>
+            {% endif %}
+            <p>{{ establishment.adress }}</p>
+        </div>
+    </div>
+    <p>{{ establishment.description }}</p>
+    <div>
+        <h2> Activités </h2>
+        <table class="table" style="width: 30%;">
+            {% for activity in establishment.activities %}
+                <tr>
+                    <td>{{ activity.activityType.name }}</td>
+                    <td>{{ activity.description }}</td>
+                <tr>
+            {% endfor %}
+        </table>
+    </div>
+    
+{% endblock %}

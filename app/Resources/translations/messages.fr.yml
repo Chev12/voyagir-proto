@@ -1,0 +1,13 @@
+banner:
+    project: Projet
+    contact: Contact
+    twitter: Voyagir sur Twitter!
+    facebook: Voyagir sur Facebook!
+    english: English version
+    french: Version française
+        
+establishment:
+    picture: Photo de l'établissement
+    manage:
+        link: Administrer
+        save: Enregistrer

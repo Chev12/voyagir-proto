@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    
+    <br />
+    <h1>Page d'accueil</h1>
+    <p>Liste des établissements</p>
+    <table class="table">
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Nom</th>
+                <th>Owner</th>
+                <th>&nbsp;</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for e in establishments %}
+            <tr>
+                <td> {{ e.id }} </td>
+                <td><a href="{{ path("etb_detail", { '_id' : e.id }) }}"> {{ e.name }} </a></td>
+                <td> {{ e.userOwner.username }} </td>
+                <td> 
+                    <form action="{{ path("etb_manage_delete") }}">
+                        <input type="hidden" name="id" value="{{ e.id }}" />
+                        <input type="submit" value="Supprimer" class="btn-primary" />
+                    </form>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+        <tfoot>
+            
+        </tfoot>
+    </table>
+{% endblock %}

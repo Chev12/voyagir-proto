@@ -1,0 +1,71 @@
+<?php
+
+namespace AppBundle\Entity;
+
+use Doctrine\ORM\Mapping as ORM;
+
+/**
+ * Establishment
+ *
+ * @ORM\Table(name="establishment", indexes={@ORM\Index(name="id_user", columns={"id_user_owner"})})
+ * @ORM\Entity
+ */
+class Establishment
+{
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="name", type="string", length=100, nullable=false)
+     */
+    private $name;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="description", type="text", nullable=true)
+     */
+    private $description;
+
+    /**
+     * @var string
+     *
+     * @ORM\Column(name="adress", type="string", length=200, nullable=false)
+     */
+    private $adress;
+
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EstablishmentActivity", mappedBy="idEstablishment")
+     */
+    private $activities;
+
+    /**
+     * @var \AppBundle\Entity\BaseUser
+     *
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseUser")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="id_user_owner", referencedColumnName="id")
+     * })
+     */
+    private $idUserOwner;
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+}
+

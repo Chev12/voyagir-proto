@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <div>
+        <ul>
+            <li>Nom : {{ activity.description }}</li>
+            <li>Prix : {{ activity.price }}</li>
+            <li>Type : {{ activity.activityType.name }}</li>
+        </ul>
+    </div>
+{% endblock %}

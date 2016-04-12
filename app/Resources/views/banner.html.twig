@@ -1,0 +1,38 @@
+<div id="banner">
+    <a href="{{ path("homepage") }}">
+        <img src="{{ asset('img/logo_white.png') }}" class="logo" />
+    </a>
+    
+    {% if is_granted("IS_AUTHENTICATED_REMEMBERED") %}
+        <span>
+            {{ 'layout.logged_in_as'|trans({'%username%': app.user.username}, 'FOSUserBundle') }} -
+        </span>
+        <a href="{{ path('fos_user_security_logout') }}">
+            {{ 'layout.logout'|trans({}, 'FOSUserBundle') }}
+        </a>
+    {% else %}
+        <a href="{{ path('fos_user_security_login') }}">
+            {{ 'layout.login'|trans({}, 'FOSUserBundle') }}
+        </a>
+        <a href="{{ path("fos_user_registration_register") }}">
+            Register
+        </a>
+    {% endif %}
+    <a href="http://facebook.com/voyagir" target="_blank" data-toggle="tooltip" 
+       title="{{ 'banner.facebook'|trans}}" class="icon facebook">
+    </a>
+    <a href="https://twitter.com/voyagir" target="_blank" data-toggle="tooltip" 
+       title="{{ 'banner.twitter'|trans}}" class="icon twitter">
+    </a>
+    {% if app.request.locale == "en" %}
+    <a href="/fr" data-toggle="tooltip" 
+       title="{{ 'banner.french'|trans}}">
+        <img src="{{ asset('img/fr_icon.png') }}" class="flag"/>
+    </a>
+    {% else %}
+    <a href="/en" data-toggle="tooltip" 
+       title="{{ 'banner.english'|trans}}">
+        <img src="{{ asset('img/en_icon.png') }}" class="flag"/>
+    </a>
+    {% endif %}
+</div>
