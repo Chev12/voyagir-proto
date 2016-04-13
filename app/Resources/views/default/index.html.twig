@@ -5,7 +5,7 @@
     <br />
     <h1>Page d'accueil</h1>
     <p>Liste des établissements</p>
-    <table class="table">
+    <table class="table" style="width: 40%;">
         <thead>
             <tr>
                 <th>ID</th>
@@ -21,10 +21,12 @@
                 <td><a href="{{ path("etb_detail", { '_id' : e.id }) }}"> {{ e.name }} </a></td>
                 <td> {{ e.userOwner.username }} </td>
                 <td> 
+                    {% if is_granted('edit', e) %}
                     <form action="{{ path("etb_manage_delete") }}">
                         <input type="hidden" name="id" value="{{ e.id }}" />
                         <input type="submit" value="Supprimer" class="btn-primary" />
                     </form>
+                    {% endif %}
                 </td>
             </tr>
         {% endfor %}

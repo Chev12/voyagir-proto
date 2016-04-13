@@ -28,11 +28,9 @@ class EstablishmentActivityController extends Controller
                 'No activity found for id ('.$_idEtb.', '.$_idAct.')'
             );
         }
-        $ownerConnected = $this->get('utils.user_security')->verifyOwnership($_idEtb);
         
         return $this->render('establishment/activity/detail.html.twig', array(
-            'activity' => $activity,
-            'ownerConnected' => $ownerConnected
+            'activity' => $activity
         ));
     }
     
@@ -44,16 +42,11 @@ class EstablishmentActivityController extends Controller
      */
     public function manageAction( Request $request, $_idEtb, $_idAct = 0)
     {   
-        
-        $ownerConnected = $this->get('utils.user_security')->verifyOwnership($_idEtb);
-        if(!$ownerConnected){
-            throw $this->createAccessDeniedException();
-        }
         $em = $this->getDoctrine()->getManager();
-        $rep = $em->getRepository('AppBundle:EstablishmentActivity');
         
         // Getting an existing activity or a new one
-        $establishmentActivity = $this->getEstablishmentActivity($rep, $_idEtb, $_idAct);
+        $establishmentActivity = $this->getEstablishmentActivity($em, $_idEtb, $_idAct);
+        $this->denyAccessUnlessGranted('edit', $establishmentActivity->getEstablishment());
         
         // Creating form
         $save_label = $this->get('translator')->trans("establishment.manage.save");
@@ -72,16 +65,6 @@ class EstablishmentActivityController extends Controller
 
         // Saving
         if ($form->isValid()) {
-            // Update an existing activity
-            if($establishmentActivity->getEstablishment() != null){
-                $etb = $establishmentActivity->getEstablishment();
-            }
-            // Creating a new one, bind with Establishment
-            else{
-                $etb = $em->getRepository('AppBundle:Establishment')->find($_idEtb);
-                $etb->addActivity($establishmentActivity);
-                $establishmentActivity->setEstablishment($etb);
-            }
             $em->persist($establishmentActivity);
             $em->flush();
             return $this->redirect(
@@ -102,16 +85,13 @@ class EstablishmentActivityController extends Controller
      * @Route("/manage/etb/{_idEtb}/activity/delete", name="etb_activity_delete")
      */
     public function delete(Request $request, $_idEtb){
-        $ownerConnected = $this->get('utils.user_security')->verifyOwnership($_idEtb);
-        if(!$ownerConnected){
-            throw $this->createAccessDeniedException();
-        }
         $em = $this->getDoctrine()->getManager();
         
         if($request->getMethod("POST")){
             $idAct = $request->get("idAct");
-            $establishmentActivity = $em->getRepository("AppBundle:EstablishmentActivity")
-                                ->find($_idEtb, $idAct);
+            $establishmentActivity = $em->getRepository('AppBundle:EstablishmentActivity')
+                                        ->findOneBy(array('id' => $_idAct, 'establishment' => $_idEtb));
+            $this->denyAccessUnlessGranted('edit', $establishmentActivity->getEstablishment());
             $em->remove($establishmentActivity);
             $em->flush();
             
@@ -131,11 +111,13 @@ class EstablishmentActivityController extends Controller
      * @return EstablishmentActivity
      * @throws type NotFoundException
      */
-    public function getEstablishmentActivity($_rep, $_idEtb, $_idAct = 0){
+    public function getEstablishmentActivity($_em, $_idEtb, $_idAct = 0){
         if($_idAct != 0){
-            $activity = $_rep->find($_idAct, $_idEtb);
+            $establishmentActivity = $_em->getRepository('AppBundle:EstablishmentActivity')
+                                         ->findOneBy(array('id' => $_idAct, 
+                                                           'establishment' => $_idEtb));
 
-            if (!$activity) {
+            if (!$establishmentActivity) {
                 throw $this->createNotFoundException(
                     'No activity found for id ('.$_idAct.','.$_idEtb.')'
                 );
@@ -143,9 +125,12 @@ class EstablishmentActivityController extends Controller
         }
         // Creating a new one
         else{
-            $activity = new EstablishmentActivity();
+            $establishmentActivity = new EstablishmentActivity();
+            $etb = $_em->getRepository('AppBundle:Establishment')->find($_idEtb);
+            $etb->addActivity($establishmentActivity);
+            $establishmentActivity->setEstablishment($etb);
         }
-        return $activity;
+        return $establishmentActivity;
     }
     
 }

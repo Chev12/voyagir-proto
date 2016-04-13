@@ -28,12 +28,9 @@ class EstablishmentController extends Controller
             );
         }
         
-        $ownerConnected = $this->get('utils.user_security')->verifyOwnership($_id);
-        
         return $this->render('establishment/detail.html.twig', array(
             'establishment' => $establishment,
-            'activities' => $establishment->getActivities(),
-            'ownerConnected' => $ownerConnected
+            'activities' => $establishment->getActivities()
         ));
     }
     

@@ -2,10 +2,10 @@
 
 {% block body %}
     <div>
-        <ul>
-            <li>Nom : {{ activity.description }}</li>
-            <li>Prix : {{ activity.price }}</li>
-            <li>Type : {{ activity.activityType.name }}</li>
+        <ul class="list-group">
+            <li class="list-group-item"><span class="label label-default">Nom</span>{{ activity.description }}</li>
+            <li class="list-group-item"><span class="label label-default">Prix</span>{{ activity.price }}</li>
+            <li class="list-group-item"><span class="label label-default">Type</span>{{ activity.activityType.name }}</li>
         </ul>
     </div>
 {% endblock %}

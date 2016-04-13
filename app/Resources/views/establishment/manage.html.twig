@@ -19,8 +19,9 @@
     </div>
     <div>
         <h2> Activités </h2>
-        <table class="table" style="width: 30%;">
+        <table class="table" style="width: 40%;">
             <tr>
+                <th>Id</th>
                 <th>Type</th>
                 <th>Description</th>
                 <th>Prix</th>
@@ -28,14 +29,22 @@
             </tr>
             {% for activity in establishment.activities %}
                 <tr>
+                    <td>{{ activity.id }}</td>
                     <td>{{ activity.activityType.name }}</td>
                     <td>{{ activity.description }}</td>
                     <td>{{ activity.price }}</td>
                     <td>
+                        <a href="{{ path("etb_activity_update", { 
+                                            '_idEtb' : establishment.id,
+                                            '_idAct' : activity.id }) }}" 
+                           class="btn btn-primary"> 
+                            Edit 
+                        </a>
                         <form action="{{ path("etb_activity_delete", { '_idEtb' : establishment.id }) }}">
                             <input type="hidden" name="idAct" value="{{ activity.id }}" />
-                            <input type="submit" value="Supprimer" class="btn-primary" />
+                            <input type="submit" value="Supprimer" class="btn btn-primary" />
                         </form>
+                    </td>
                 <tr>
             {% endfor %}
         </table>

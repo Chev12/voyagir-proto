@@ -20,6 +20,15 @@ use Doctrine\ORM\Mapping as ORM;
 class EstablishmentActivity
 {
     /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
+     */
+    private $id;
+    
+    /**
      * @var string
      *
      * @ORM\Column(name="description", type="text", length=16777215, nullable=true)
@@ -34,13 +43,17 @@ class EstablishmentActivity
     private $price;
 
     /**
-     * @var integer
+     * @var \AppBundle\Entity\Establishment
      *
-     * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
+     * 
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Establishment", inversedBy="activities")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="establishment", referencedColumnName="id")
+     * })
      */
-    private $id;
+    private $establishment;
 
     /**
      * @var \AppBundle\Entity\ActivityType
@@ -51,18 +64,6 @@ class EstablishmentActivity
      * })
      */
     private $activityType;
-
-    /**
-     * @var \AppBundle\Entity\Establishment
-     *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Establishment", inversedBy="activities")
-     * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="establishment", referencedColumnName="id")
-     * })
-     */
-    private $establishment;
 
     /**
      * Set description
