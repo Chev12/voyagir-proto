@@ -16,3 +16,9 @@ services:
             - { name: security.voter }
         # small performance boost
         public: false
+    
+    app.etb_act_listener:
+        class: AppBundle\Services\Listeners\EstablishmentActivityListener
+        arguments: ['@logger']
+        tags:
+            - { name: doctrine.event_subscriber, event: prePersist, connection: default }

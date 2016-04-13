@@ -2,6 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\ORM\Mapping\NamedQueries;
+use Doctrine\ORM\Mapping\NamedQuery;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -9,6 +12,10 @@ use Doctrine\ORM\Mapping as ORM;
  *
  * @ORM\Table(name="establishment_activity", uniqueConstraints={@ORM\UniqueConstraint(name="id_establishment_activity", columns={"id_establishment", "id_activity_type", "id"})}, indexes={@ORM\Index(name="ind_establishment_activity", columns={"id_activity_type", "id_establishment"}), @ORM\Index(name="IDX_E70DFA6865C7608B", columns={"id_establishment"}), @ORM\Index(name="IDX_E70DFA6831325DDE", columns={"id_activity_type"})})
  * @ORM\Entity
+ * @NamedQueries({
+ *  @NamedQuery(name="getNewId",
+ *              query="SELECT MAX(a.id)+1 AS new_id FROM AppBundle:EstablishmentActivity a JOIN a.establishment e WHERE e.id = :id_etb")
+ * })
  */
 class EstablishmentActivity
 {
@@ -31,7 +38,7 @@ class EstablishmentActivity
      *
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $id;
 
@@ -48,6 +55,8 @@ class EstablishmentActivity
     /**
      * @var \AppBundle\Entity\Establishment
      *
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="NONE")
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Establishment", inversedBy="activities")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="establishment", referencedColumnName="id")

@@ -8,7 +8,7 @@ use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\EstablishmentActivity;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
 use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Component\Form\Extension\Core\Type\EntityType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use \Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
 class EstablishmentActivityController extends Controller
@@ -131,13 +131,13 @@ class EstablishmentActivityController extends Controller
      * @return EstablishmentActivity
      * @throws type NotFoundException
      */
-    public function getEstablishmentActivity($_rep, $_idAct = 0){
+    public function getEstablishmentActivity($_rep, $_idEtb, $_idAct = 0){
         if($_idAct != 0){
-            $activity = $_rep->find($_idAct);
+            $activity = $_rep->find($_idAct, $_idEtb);
 
             if (!$activity) {
                 throw $this->createNotFoundException(
-                    'No activity found for id '.$_idAct
+                    'No activity found for id ('.$_idAct.','.$_idEtb.')'
                 );
             }
         }
