@@ -23,6 +23,23 @@ class BusinessService {
     private $logger;
     
     /**
+     * Get an object by id.
+     * @param integer $id
+     * @return Object
+     * @throws NotFoundException
+     */
+    function get( $id ) {
+        $obj = $this->getRepo()->find( $id );
+            
+        if ( ! $obj ) {
+            throw new NotFoundHttpException(
+                'No object found for id '.$id, null
+            );
+        }
+        return $obj;
+    }
+    
+    /**
      * Find all entities in repository
      */
     public function findAll(){

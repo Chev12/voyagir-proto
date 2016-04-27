@@ -49,7 +49,8 @@ class CommitmentController extends ControllerSpecial {
         }
         
         // Show form
-        return $this->render( 'admin/commitment/manage.html.twig', array(
+        return $this->render( 'admin/basicAdmin.html.twig', array(
+            'object_name' => 'Controller',
             'form' => $form->createView(),
             'commitment' => $commitment
         ));

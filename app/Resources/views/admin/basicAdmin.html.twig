@@ -1,0 +1,17 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {% if commitment.id != null %}
+        Mise à jour : {{ object_name }}
+    {% else %}
+        Nouveau : {{ object_name }}
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div style="width: 60%">
+        <a href="{{ path("admin_home") }}">Accueil admin</a>
+        <h2> Informations générales </h2>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

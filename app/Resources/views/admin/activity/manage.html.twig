@@ -1,0 +1,20 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {% if activity.id != null %}
+        Mise à jour d'une activité
+    {% else %}
+        Nouvelle activité
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div style="width: 60%">
+        <a href="{{ path("admin_home") }}">Accueil admin</a>
+        <h1> Informations générales </h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        
+        <h1>Lier un engagement</h1>
+        
+    </div>
+{% endblock %}
