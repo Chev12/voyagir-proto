@@ -37,5 +37,5 @@ security:
         - { path: ^/%locale%/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/register, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/resetting, role: IS_AUTHENTICATED_ANONYMOUSLY }
-        #- { path: ^/%locale%/manage/.*, role: IS_AUTHENTICATED_REMEMBERED }
+        - { path: ^/%locale%/manage/.*, role: IS_AUTHENTICATED_REMEMBERED }
         - { path: ^/%locale%/admin, role: ROLE_ADMIN }

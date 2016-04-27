@@ -2,8 +2,8 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping as ORM;
 use FOS\UserBundle\Model\User;
+use Doctrine\ORM\Mapping as ORM;
 
 /**
  * BaseUser
@@ -13,10 +13,10 @@ use FOS\UserBundle\Model\User;
  */
 class BaseUser extends User
 {
-     /**
+    /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
@@ -28,7 +28,7 @@ class BaseUser extends User
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Establishment", mappedBy="userOwner")
      */
     protected $establishments;
-
+    
     /**
      * Constructor
      */
@@ -36,16 +36,6 @@ class BaseUser extends User
     {
         parent::__construct();
         $this->establishments = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    /**
-     * Get id
-     *
-     * @return integer
-     */
-    public function getId()
-    {
-        return $this->id;
     }
 
     /**

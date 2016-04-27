@@ -1,0 +1,16 @@
+{% extends "base.html.twig" %}
+{% block title %}
+    {% if commitment.id != null %}
+        Mise à jour d'un engagement
+    {% else %}
+        Nouveal engagement
+    {% endif %}
+{% endblock %}
+{% block body %}
+    <div style="width: 60%">
+        <h2> Informations générales </h2>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+    </div>
+{% endblock %}

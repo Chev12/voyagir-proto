@@ -7,7 +7,6 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * User
  *
- * @ORM\Table(name="user")
  * @ORM\MappedSuperclass
  */
 class User
@@ -22,7 +21,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="username_canonical", type="string", length=255, unique=true)
+     * @ORM\Column(name="username_canonical", type="string", length=255)
      */
     private $usernameCanonical;
 
@@ -36,7 +35,7 @@ class User
     /**
      * @var string
      *
-     * @ORM\Column(name="email_canonical", type="string", length=255, unique=true)
+     * @ORM\Column(name="email_canonical", type="string", length=255)
      */
     private $emailCanonical;
 

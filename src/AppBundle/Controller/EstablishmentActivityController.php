@@ -18,10 +18,7 @@ class EstablishmentActivityController extends Controller
      */
     public function indexAction($_idEtb, $_idAct = 0)
     {   
-        $rep = $this->getDoctrine()
-                    ->getRepository('AppBundle:EstablishmentActivity');
-        
-        $activity = $rep->findOneBy(array('id' => $_idAct, 'establishment' => $_idEtb));
+        $activity = $this->getRepo()->findOneBy(array('establishment' => $_idEtb, 'level' => $_idAct));
             
         if (!$activity) {
             throw $this->createNotFoundException(
@@ -70,7 +67,7 @@ class EstablishmentActivityController extends Controller
             return $this->redirect(
                     $this->generateUrl('etb_activity_detail', array(
                         '_idEtb' => $_idEtb,
-                        '_idAct' => $establishmentActivity->getId())
+                        '_idAct' => $establishmentActivity->getLevel())
                             ));
         }
         
@@ -89,8 +86,8 @@ class EstablishmentActivityController extends Controller
         
         if($request->getMethod("POST")){
             $idAct = $request->get("idAct");
-            $establishmentActivity = $em->getRepository('AppBundle:EstablishmentActivity')
-                                        ->findOneBy(array('id' => $_idAct, 'establishment' => $_idEtb));
+            $establishmentActivity = $this->getRepo()
+                                          ->findOneBy(array('establishment' => $_idEtb, 'level' => $idAct));
             $this->denyAccessUnlessGranted('edit', $establishmentActivity->getEstablishment());
             $em->remove($establishmentActivity);
             $em->flush();
@@ -105,7 +102,7 @@ class EstablishmentActivityController extends Controller
     
     /**
      * Finds the activity with the given id or creates a new one.
-     * @param type $_rep Doctrine repository
+     * @param type $_em EntityManager
      * @param type $_idEtb Establishment ID
      * @param type $_idAct Activity ID : use 0 to create a new one
      * @return EstablishmentActivity
@@ -113,9 +110,9 @@ class EstablishmentActivityController extends Controller
      */
     public function getEstablishmentActivity($_em, $_idEtb, $_idAct = 0){
         if($_idAct != 0){
-            $establishmentActivity = $_em->getRepository('AppBundle:EstablishmentActivity')
-                                         ->findOneBy(array('id' => $_idAct, 
-                                                           'establishment' => $_idEtb));
+            $establishmentActivity = $this->getRepo()
+                                          ->findOneBy(array('establishment' => $_idEtb,
+                                                            'level' => $_idAct));
 
             if (!$establishmentActivity) {
                 throw $this->createNotFoundException(
@@ -133,5 +130,12 @@ class EstablishmentActivityController extends Controller
         return $establishmentActivity;
     }
     
+    /**
+     * Get EstablishmentActivity repository
+     * @return type
+     */
+    public function getRepo(){
+        return $this->getDoctrine()->getRepository('AppBundle:EstablishmentActivity');
+    }
 }
 

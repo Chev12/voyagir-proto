@@ -2,19 +2,17 @@
 
 namespace AppBundle\Entity;
 
-use Doctrine\ORM\Mapping\NamedQueries;
-use Doctrine\ORM\Mapping\NamedQuery;
 
 use Doctrine\ORM\Mapping as ORM;
 
 /**
  * EstablishmentActivity
  *
- * @ORM\Table(name="establishment_activity", uniqueConstraints={@ORM\UniqueConstraint(name="id_establishment_activity", columns={"id_establishment", "id_activity_type", "id"})}, indexes={@ORM\Index(name="ind_establishment_activity", columns={"id_activity_type", "id_establishment"}), @ORM\Index(name="IDX_E70DFA6865C7608B", columns={"id_establishment"}), @ORM\Index(name="IDX_E70DFA6831325DDE", columns={"id_activity_type"})})
+ * @ORM\Table(name="establishment_activity", uniqueConstraints={@ORM\UniqueConstraint(name="establishment_order", columns={"establishment", "order"})}, indexes={@ORM\Index(name="activity_type", columns={"activity_type"}), @ORM\Index(name="establishment", columns={"establishment"})})
  * @ORM\Entity
- * @NamedQueries({
- *  @NamedQuery(name="getNewId",
- *              query="SELECT MAX(a.id)+1 AS new_id FROM AppBundle:EstablishmentActivity a JOIN a.establishment e WHERE e.id = :id_etb")
+ * @ORM\NamedQueries({
+ *  @ORM\NamedQuery(name="getNewLevel",
+ *              query="SELECT MAX(a.level)+1 AS new_level FROM AppBundle:EstablishmentActivity a JOIN a.establishment e WHERE e.id = :id_etb")
  * })
  */
 class EstablishmentActivity
@@ -22,12 +20,12 @@ class EstablishmentActivity
     /**
      * @var integer
      *
-     * @ORM\Column(name="id", type="integer")
+     * @ORM\Column(name="id", type="integer", nullable=false)
      * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
+     * @ORM\GeneratedValue(strategy="AUTO")
      */
     private $id;
-    
+
     /**
      * @var string
      *
@@ -43,12 +41,16 @@ class EstablishmentActivity
     private $price;
 
     /**
-     * @var \AppBundle\Entity\Establishment
+     * @var integer
      *
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="NONE")
-     * 
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Establishment", inversedBy="activities")
+     * @ORM\Column(name="level", type="integer", nullable=false)
+     */
+    private $level;
+
+    /**
+     * @var \Establishment
+     *
+     * @ORM\ManyToOne(targetEntity="Establishment", inversedBy="activities")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="establishment", referencedColumnName="id")
      * })
@@ -56,14 +58,26 @@ class EstablishmentActivity
     private $establishment;
 
     /**
-     * @var \AppBundle\Entity\ActivityType
+     * @var \ActivityType
      *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\ActivityType")
+     * @ORM\ManyToOne(targetEntity="ActivityType", fetch="EAGER")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="activity_type", referencedColumnName="id")
      * })
      */
     private $activityType;
+
+
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set description
@@ -114,61 +128,37 @@ class EstablishmentActivity
     }
 
     /**
-     * Set id
+     * Set level
      *
-     * @param integer $id
+     * @param integer $level
      *
      * @return EstablishmentActivity
      */
-    public function setId($id)
+    public function setLevel($level)
     {
-        $this->id = $id;
+        $this->level = $level;
 
         return $this;
     }
 
     /**
-     * Get id
+     * Get level
      *
      * @return integer
      */
-    public function getId()
+    public function getLevel()
     {
-        return $this->id;
+        return $this->level;
     }
 
     /**
-     * Set activityType
-     *
-     * @param \AppBundle\Entity\ActivityType $activityType
-     *
-     * @return EstablishmentActivity
-     */
-    public function setActivityType(\AppBundle\Entity\ActivityType $activityType)
-    {
-        $this->activityType = $activityType;
-
-        return $this;
-    }
-
-    /**
-     * Get activityType
-     *
-     * @return \AppBundle\Entity\ActivityType
-     */
-    public function getActivityType()
-    {
-        return $this->activityType;
-    }
-
-    /**
-     * Set idEstablishment
+     * Set establishment
      *
      * @param \AppBundle\Entity\Establishment $establishment
      *
      * @return EstablishmentActivity
      */
-    public function setEstablishment(\AppBundle\Entity\Establishment $establishment)
+    public function setEstablishment(\AppBundle\Entity\Establishment $establishment = null)
     {
         $this->establishment = $establishment;
 
@@ -183,5 +173,29 @@ class EstablishmentActivity
     public function getEstablishment()
     {
         return $this->establishment;
+    }
+
+    /**
+     * Set activityType
+     *
+     * @param \AppBundle\Entity\ActivityType $activityType
+     *
+     * @return EstablishmentActivity
+     */
+    public function setActivityType(\AppBundle\Entity\ActivityType $activityType = null)
+    {
+        $this->activityType = $activityType;
+
+        return $this;
+    }
+
+    /**
+     * Get activityType
+     *
+     * @return \AppBundle\Entity\ActivityType
+     */
+    public function getActivityType()
+    {
+        return $this->activityType;
     }
 }

@@ -23,8 +23,8 @@
                 <td> 
                     {% if is_granted('edit', e) %}
                     <form action="{{ path("etb_manage_delete") }}">
-                        <input type="hidden" name="id" value="{{ e.id }}" />
-                        <input type="submit" value="Supprimer" class="btn-primary" />
+                        <input type="hidden" name="idEtb" value="{{ e.id }}" />
+                        <input type="submit" value="Supprimer" class="btn btn-primary" />
                     </form>
                     {% endif %}
                 </td>

@@ -10,6 +10,9 @@ services:
     utils.user_security:
         class: AppBundle\Services\UserSecurity
         arguments: ['@security.token_storage', '@security.authorization_checker']
+    app.business_service_factory:
+        class: AppBundle\Services\Business\BusinessServiceFactory
+        arguments: ['@doctrine', '@logger']
     app.etb_voter:
         class: AppBundle\Security\EstablishmentVoter
         tags:

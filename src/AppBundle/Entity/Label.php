@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ActivityType
+ * Label
  *
- * @ORM\Table(name="activity_type")
+ * @ORM\Table(name="label")
  * @ORM\Entity
  */
-class ActivityType
+class Label
 {
     /**
      * @var integer
@@ -24,31 +24,31 @@ class ActivityType
     /**
      * @var string
      *
-     * @ORM\Column(name="name", type="string", length=100, nullable=true)
+     * @ORM\Column(name="name", type="text", length=255, nullable=false)
      */
     private $name;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Commitment", inversedBy="activityType")
-     * @ORM\JoinTable(name="activity_commitment",
+     * @ORM\ManyToMany(targetEntity="Establishment", inversedBy="labels")
+     * @ORM\JoinTable(name="establishment_label",
      *   joinColumns={
-     *     @ORM\JoinColumn(name="activity_type", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="label", referencedColumnName="id")
      *   },
      *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="commitment", referencedColumnName="id")
+     *     @ORM\JoinColumn(name="establishment", referencedColumnName="id")
      *   }
      * )
      */
-    private $commitments;
+    private $establishment;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->commitments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->establishment = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -67,7 +67,7 @@ class ActivityType
      *
      * @param string $name
      *
-     * @return ActivityType
+     * @return Label
      */
     public function setName($name)
     {
@@ -87,36 +87,36 @@ class ActivityType
     }
 
     /**
-     * Add commitment
+     * Add establishment
      *
-     * @param \AppBundle\Entity\Commitment $commitment
+     * @param \AppBundle\Entity\Establishment $establishment
      *
-     * @return ActivityType
+     * @return Label
      */
-    public function addCommitment(\AppBundle\Entity\Commitment $commitment)
+    public function addEstablishment(\AppBundle\Entity\Establishment $establishment)
     {
-        $this->commitments[] = $commitment;
+        $this->establishment[] = $establishment;
 
         return $this;
     }
 
     /**
-     * Remove commitment
+     * Remove establishment
      *
-     * @param \AppBundle\Entity\Commitment $commitment
+     * @param \AppBundle\Entity\Establishment $establishment
      */
-    public function removeCommitment(\AppBundle\Entity\Commitment $commitment)
+    public function removeEstablishment(\AppBundle\Entity\Establishment $establishment)
     {
-        $this->commitments->removeElement($commitment);
+        $this->establishment->removeElement($establishment);
     }
 
     /**
-     * Get commitment
+     * Get establishment
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCommitments()
+    public function getEstablishment()
     {
-        return $this->commitments;
+        return $this->establishment;
     }
 }

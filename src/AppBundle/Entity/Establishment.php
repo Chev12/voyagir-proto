@@ -7,11 +7,20 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Establishment
  *
- * @ORM\Table(name="establishment", indexes={@ORM\Index(name="id_user", columns={"id_user_owner"})})
+ * @ORM\Table(name="establishment", indexes={@ORM\Index(name="id_user", columns={"user_owner"}), @ORM\Index(name="category_inf_category_sup", columns={"category_inf", "category_sup"})})
  * @ORM\Entity
  */
 class Establishment
 {
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
+     */
+    private $id;
+
     /**
      * @var string
      *
@@ -34,25 +43,20 @@ class Establishment
     private $adress;
 
     /**
-     * @var integer
+     * @var \Category
      *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="IDENTITY")
+     * @ORM\ManyToOne(targetEntity="Category")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="category_inf", referencedColumnName="limit_inf"),
+     *   @ORM\JoinColumn(name="category_sup", referencedColumnName="limit_sup")
+     * })
      */
-    private $id;
+    private $category;
 
     /**
-     * @var \Doctrine\Common\Collections\Collection
+     * @var \BaseUser
      *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EstablishmentActivity", mappedBy="establishment", cascade={"remove"})
-     */
-    private $activities;
-
-    /**
-     * @var \AppBundle\Entity\BaseUser
-     *
-     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\BaseUser", inversedBy="establishments")
+     * @ORM\ManyToOne(targetEntity="BaseUser", inversedBy="establishments")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_owner", referencedColumnName="id")
      * })
@@ -60,13 +64,38 @@ class Establishment
     private $userOwner;
 
     /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Label", mappedBy="establishment")
+     */
+    private $labels;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EstablishmentActivity", mappedBy="establishment", cascade={"remove"})
+     */
+    protected $activities;
+
+    /**
      * Constructor
      */
     public function __construct()
     {
+        $this->label = new \Doctrine\Common\Collections\ArrayCollection();
         $this->activities = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
 
     /**
      * Set name
@@ -139,29 +168,87 @@ class Establishment
     {
         return $this->adress;
     }
-        
+
     /**
-     * Set id
+     * Set category
      *
-     * @param string $id
+     * @param \AppBundle\Entity\Category $category
      *
      * @return Establishment
      */
-    public function setId($id)
+    public function setCategory(\AppBundle\Entity\Category $category = null)
     {
-        $this->id = $id;
+        $this->category = $category;
 
         return $this;
     }
-    
+
     /**
-     * Get id
+     * Get category
      *
-     * @return integer
+     * @return \AppBundle\Entity\Category
      */
-    public function getId()
+    public function getCategory()
     {
-        return $this->id;
+        return $this->category;
+    }
+
+    /**
+     * Set userOwner
+     *
+     * @param \AppBundle\Entity\BaseUser $userOwner
+     *
+     * @return Establishment
+     */
+    public function setUserOwner(\AppBundle\Entity\BaseUser $userOwner = null)
+    {
+        $this->userOwner = $userOwner;
+
+        return $this;
+    }
+
+    /**
+     * Get userOwner
+     *
+     * @return \AppBundle\Entity\BaseUser
+     */
+    public function getUserOwner()
+    {
+        return $this->userOwner;
+    }
+
+    /**
+     * Add label
+     *
+     * @param \AppBundle\Entity\Label $label
+     *
+     * @return Establishment
+     */
+    public function addLabel(\AppBundle\Entity\Label $label)
+    {
+        $this->label[] = $label;
+
+        return $this;
+    }
+
+    /**
+     * Remove label
+     *
+     * @param \AppBundle\Entity\Label $label
+     */
+    public function removeLabel(\AppBundle\Entity\Label $label)
+    {
+        $this->label->removeElement($label);
+    }
+
+    /**
+     * Get labels
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLabels()
+    {
+        return $this->labels;
     }
 
     /**
@@ -196,29 +283,5 @@ class Establishment
     public function getActivities()
     {
         return $this->activities;
-    }
-
-    /**
-     * Set idUserOwner
-     *
-     * @param \AppBundle\Entity\BaseUser $userOwner
-     *
-     * @return Establishment
-     */
-    public function setIdUserOwner(\AppBundle\Entity\BaseUser $userOwner = null)
-    {
-        $this->userOwner = $userOwner;
-
-        return $this;
-    }
-
-    /**
-     * Get idUserOwner
-     *
-     * @return \AppBundle\Entity\BaseUser
-     */
-    public function getUserOwner()
-    {
-        return $this->userOwner;
     }
 }
