@@ -22,6 +22,7 @@
         <table class="table" style="width: 40%;">
             <tr>
                 <th>Id</th>
+                <th>Level</th>
                 <th>Type</th>
                 <th>Description</th>
                 <th>Prix</th>
@@ -30,13 +31,14 @@
             {% for activity in establishment.activities %}
                 <tr>
                     <td>{{ activity.id }}</td>
+                    <td>{{ activity.level }}</td>
                     <td>{{ activity.activityType.name }}</td>
                     <td>{{ activity.description }}</td>
                     <td>{{ activity.price }}</td>
                     <td>
                         <a href="{{ path("etb_activity_update", { 
                                             '_idEtb' : establishment.id,
-                                            '_idAct' : activity.id }) }}" 
+                                            '_level' : activity.level }) }}" 
                            class="btn btn-primary"> 
                             Edit 
                         </a>

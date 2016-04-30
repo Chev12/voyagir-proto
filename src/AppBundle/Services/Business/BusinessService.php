@@ -77,8 +77,8 @@ class BusinessService {
         $this->em->flush();
     }
     
-    public function __construct($doctrine) {
-        $this->em = $doctrine->getManager();
+    public function __construct($em) {
+        $this->em = $em;
     }
     
     /**

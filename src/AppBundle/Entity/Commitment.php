@@ -3,6 +3,10 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Doctrine\Common\Collections\ArrayCollection;
+use AppBundle\Entity\ActivityType;
+use AppBundle\Entity\Category;
+use AppBundle\Entity\CommitmentQuestion;
 
 /**
  * Commitment
@@ -42,9 +46,23 @@ class Commitment
      */
     private $questions;
     
+    /**
+     * @var \Doctrine\Common\Collections\ArrayCollection 
+     * 
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\ActivityType", mappedBy="commitments")
+     */
+    private $activities;
     
     /**
-     * Original questions, needed in the case of removing questions
+     * @var \Doctrine\Common\Collections\ArrayCollection 
+     * 
+     * @ORM\ManyToMany(targetEntity="AppBundle\Entity\Category", mappedBy="commitments")
+     */
+    private $categories;
+    
+    /**
+     * Original questions, needed in the case of removing questions.
+     * Not persisted
      * @var \Doctrine\Common\Collections\Collection
      */
     private $originalQuestions;
@@ -54,8 +72,10 @@ class Commitment
      */
     public function __construct()
     {
-        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->originalQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->activities = new ArrayCollection();
+        $this->categories = new ArrayCollection();
+        $this->questions = new ArrayCollection();
+        $this->originalQuestions = new ArrayCollection();
     }
     
     /**
@@ -69,7 +89,7 @@ class Commitment
     }
 
     /**
-     * Set original uestions
+     * Set original questions
      *
      * @return \Doctrine\Common\Collections\Collection
      */
@@ -81,13 +101,13 @@ class Commitment
 
     
     /**
-     * Add establishment
+     * Add question
      *
      * @param \AppBundle\Entity\CommitmentQuestion $question
      *
      * @return BaseUser
      */
-    public function addQuestion(\AppBundle\Entity\CommitmentQuestion $question)
+    public function addQuestion(CommitmentQuestion $question)
     {
         $this->questions[] = $question;
         $question->setCommitment($this);
@@ -95,11 +115,11 @@ class Commitment
     }
 
     /**
-     * Remove establishment
+     * Remove question
      *
      * @param \AppBundle\Entity\CommitmentQuestion $question
      */
-    public function removeQuestion(\AppBundle\Entity\CommitmentQuestion $question)
+    public function removeQuestion(CommitmentQuestion $question)
     {
         $this->questions->removeElement($question);
     }
@@ -112,6 +132,73 @@ class Commitment
     public function getQuestions()
     {
         return $this->questions;
+    }
+    
+     /**
+     * Add activity
+     *
+     * @param \AppBundle\Entity\ActivityType $activity
+     *
+     * @return BaseUser
+     */
+    public function addActivity(ActivityType $activity)
+    {
+        $this->activities[] = $activity;
+        $activity->setCommitment($this);
+        return $this;
+    }
+
+    /**
+     * Remove activity
+     *
+     * @param \AppBundle\Entity\ActivityType $activities
+     */
+    public function removeActivity(ActivityType $activities)
+    {
+        $this->activities->removeElement($activities);
+    }
+
+    /**
+     * Get activities
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getActivities()
+    {
+        return $this->activities;
+    }    
+     /**
+     * Add category
+     *
+     * @param \AppBundle\Entity\Category $category
+     *
+     * @return BaseUser
+     */
+    public function addCategory(Category $category)
+    {
+        $this->categories[] = $category;
+        $category->setCommitment($this);
+        return $this;
+    }
+
+    /**
+     * Remove category
+     *
+     * @param \AppBundle\Entity\Category $categories
+     */
+    public function removeCategory(Category $categories)
+    {
+        $this->categories->removeElement($categories);
+    }
+
+    /**
+     * Get categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getCategories()
+    {
+        return $this->categories;
     }
 
     /**

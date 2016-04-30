@@ -31,7 +31,7 @@ class ActivityType
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Commitment", inversedBy="activityType")
+     * @ORM\ManyToMany(targetEntity="Commitment", inversedBy="activities")
      * @ORM\JoinTable(name="activity_commitment",
      *   joinColumns={
      *     @ORM\JoinColumn(name="activity_type", referencedColumnName="id")

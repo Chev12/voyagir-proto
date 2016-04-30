@@ -7,7 +7,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Category
  *
- * @ORM\Table(name="category", indexes={@ORM\Index(name="limit_inf_limit_sup", columns={"limit_inf", "limit_sup"})})
+ * @ORM\Table(name="category", uniqueConstraints={@ORM\UniqueConstraint(name="limits", columns={"limit_inf", "limit_sup"} )})
  * @ORM\Entity
  */
 class Category
@@ -15,8 +15,16 @@ class Category
     /**
      * @var integer
      *
-     * @ORM\Column(name="limit_inf", type="integer", nullable=false)
      * @ORM\Id
+     * @ORM\Column(name="id", type="integer", nullable=false)
+     * @ORM\GeneratedValue(strategy="AUTO")
+     */
+    private $id;
+    
+    /**
+     * @var integer
+     *
+     * @ORM\Column(name="limit_inf", type="integer", nullable=false)
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $limitInf;
@@ -25,7 +33,6 @@ class Category
      * @var integer
      *
      * @ORM\Column(name="limit_sup", type="integer", nullable=false)
-     * @ORM\Id
      * @ORM\GeneratedValue(strategy="NONE")
      */
     private $limitSup;
@@ -54,9 +61,17 @@ class Category
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Commitment", mappedBy="categoryInf")
+     * @ORM\ManyToMany(targetEntity="Commitment", inversedBy="categories")
+     * @ORM\JoinTable(name="category_commitment",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="category", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="commitment", referencedColumnName="id")
+     *   }
+     * )
      */
-    private $commitment;
+    private $commitments;
 
     /**
      * Constructor
@@ -67,6 +82,16 @@ class Category
     }
 
 
+    /**
+     * Get id
+     *
+     * @return integer
+     */
+    public function getId()
+    {
+        return $this->id;
+    }
+    
     /**
      * Set limitInf
      *
@@ -196,7 +221,7 @@ class Category
      */
     public function addCommitment(\AppBundle\Entity\Commitment $commitment)
     {
-        $this->commitment[] = $commitment;
+        $this->commitments[] = $commitment;
 
         return $this;
     }
@@ -208,16 +233,16 @@ class Category
      */
     public function removeCommitment(\AppBundle\Entity\Commitment $commitment)
     {
-        $this->commitment->removeElement($commitment);
+        $this->commitments->removeElement($commitment);
     }
 
     /**
-     * Get commitment
+     * Get commitments
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getCommitment()
+    public function getCommitments()
     {
-        return $this->commitment;
+        return $this->commitments;
     }
 }

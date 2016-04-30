@@ -3,7 +3,6 @@
 namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 use AppBundle\Entity\EstablishmentActivity;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
@@ -11,20 +10,32 @@ use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use \Symfony\Component\Form\Extension\Core\Type\IntegerType;
 
-class EstablishmentActivityController extends Controller
+class EstablishmentActivityController extends ControllerSpecial
 {
     /**
-     * @Route("/etb/{_idEtb}/activity/{_idAct}", name="etb_activity_detail")
+     * @var \AppBundle\Services\Business\EstablishmentActivityService
      */
-    public function indexAction($_idEtb, $_idAct = 0)
+    private $activityService;
+    /**
+     * @var \AppBundle\Services\Business\BusinessService
+     */
+    private $establishmentService;
+    
+    public function init(){
+        $this->activityService = 
+                $this->get( 'app.business_service_factory' )
+                     ->build( 'EstablishmentActivity' );
+        $this->establishmentService = 
+                $this->get( 'app.business_service_factory' )
+                     ->build( 'Establishment' );
+    }
+    
+    /**
+     * @Route("/etb/{_idEtb}/activity/{_level}", name="etb_activity_detail")
+     */
+    public function indexAction($_idEtb, $_level = 0)
     {   
-        $activity = $this->getRepo()->findOneBy(array('establishment' => $_idEtb, 'level' => $_idAct));
-            
-        if (!$activity) {
-            throw $this->createNotFoundException(
-                'No activity found for id ('.$_idEtb.', '.$_idAct.')'
-            );
-        }
+        $activity = $this->activityService->getByEtbAndLevel($_idEtb, $_level);
         
         return $this->render('establishment/activity/detail.html.twig', array(
             'activity' => $activity
@@ -32,38 +43,24 @@ class EstablishmentActivityController extends Controller
     }
     
     /**
-     * @Route("/manage/etb/{_idEtb}/activity/{_idAct}", name="etb_activity_update",
+     * @Route("/manage/etb/{_idEtb}/activity/{_level}", name="etb_activity_update",
      *                            defaults={"_idAct" = 0})
      * @Route("/manage/etb/{_idEtb}/activity/", name="etb_activity_new",
-     *                      defaults={"_idAct" = 0})
+     *                      defaults={"_level" = 0})
      */
-    public function manageAction( Request $request, $_idEtb, $_idAct = 0)
+    public function manageAction( Request $request, $_idEtb, $_level = 0)
     {   
-        $em = $this->getDoctrine()->getManager();
-        
         // Getting an existing activity or a new one
-        $establishmentActivity = $this->getEstablishmentActivity($em, $_idEtb, $_idAct);
+        $establishmentActivity = $this->getEstablishmentActivity($_idEtb, $_level);
         $this->denyAccessUnlessGranted('edit', $establishmentActivity->getEstablishment());
         
         // Creating form
-        $save_label = $this->get('translator')->trans("establishment.manage.save");
-        $form = $this->createFormBuilder($establishmentActivity)
-            ->add('description',    TextType::class)
-            ->add('price',          IntegerType::class)
-            ->add('activity_type',  EntityType::class,
-                                    array(  
-                                        'class' => 'AppBundle:ActivityType',
-                                        'choice_label' => 'name'))
-            ->add('save',           SubmitType::class,
-                                    array('label' => $save_label))
-            ->getForm();
-
+        $form = $this->buildForm($establishmentActivity);
         $form->handleRequest($request);
 
         // Saving
         if ($form->isValid()) {
-            $em->persist($establishmentActivity);
-            $em->flush();
+            $this->activityService->save($establishmentActivity);
             return $this->redirect(
                     $this->generateUrl('etb_activity_detail', array(
                         '_idEtb' => $_idEtb,
@@ -79,18 +76,34 @@ class EstablishmentActivityController extends Controller
     }
     
     /**
+     * Build the form for editin an activity
+     * 
+     * @param type $establishmentActivity
+     * @return Form
+     */
+    public function buildform($establishmentActivity) {
+        $save_label = $this->get('translator')->trans("establishment.manage.save");
+        return $this->createFormBuilder($establishmentActivity)
+            ->add('description',    TextType::class)
+            ->add('price',          IntegerType::class)
+            ->add('activity_type',  EntityType::class,
+                                    array(  
+                                        'class' => 'AppBundle:ActivityType',
+                                        'choice_label' => 'name'))
+            ->add('save',           SubmitType::class,
+                                    array('label' => $save_label))
+            ->getForm();
+    }
+    
+    /**
      * @Route("/manage/etb/{_idEtb}/activity/delete", name="etb_activity_delete")
      */
     public function delete(Request $request, $_idEtb){
-        $em = $this->getDoctrine()->getManager();
-        
         if($request->getMethod("POST")){
             $idAct = $request->get("idAct");
-            $establishmentActivity = $this->getRepo()
-                                          ->findOneBy(array('establishment' => $_idEtb, 'level' => $idAct));
+            $establishmentActivity = $this->activityService->get($idAct);
             $this->denyAccessUnlessGranted('edit', $establishmentActivity->getEstablishment());
-            $em->remove($establishmentActivity);
-            $em->flush();
+            $this->activityService->remove($establishmentActivity);
             
             return $this->redirectToRoute('etb_manage_update', array(
                             'id' => $_idEtb
@@ -102,28 +115,19 @@ class EstablishmentActivityController extends Controller
     
     /**
      * Finds the activity with the given id or creates a new one.
-     * @param type $_em EntityManager
      * @param type $_idEtb Establishment ID
-     * @param type $_idAct Activity ID : use 0 to create a new one
+     * @param type $_level Activity level : use 0 to create a new one
      * @return EstablishmentActivity
      * @throws type NotFoundException
      */
-    public function getEstablishmentActivity($_em, $_idEtb, $_idAct = 0){
-        if($_idAct != 0){
-            $establishmentActivity = $this->getRepo()
-                                          ->findOneBy(array('establishment' => $_idEtb,
-                                                            'level' => $_idAct));
-
-            if (!$establishmentActivity) {
-                throw $this->createNotFoundException(
-                    'No activity found for id ('.$_idAct.','.$_idEtb.')'
-                );
-            }
+    public function getEstablishmentActivity($_idEtb, $_level = 0){
+        if($_level != 0){
+            $establishmentActivity = $this->activityService->getByEtbAndLevel($_idEtb, $_level);
         }
         // Creating a new one
         else{
             $establishmentActivity = new EstablishmentActivity();
-            $etb = $_em->getRepository('AppBundle:Establishment')->find($_idEtb);
+            $etb = $this->establishmentService->get($_idEtb);
             $etb->addActivity($establishmentActivity);
             $establishmentActivity->setEstablishment($etb);
         }

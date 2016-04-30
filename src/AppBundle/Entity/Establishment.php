@@ -47,8 +47,7 @@ class Establishment
      *
      * @ORM\ManyToOne(targetEntity="Category")
      * @ORM\JoinColumns({
-     *   @ORM\JoinColumn(name="category_inf", referencedColumnName="limit_inf"),
-     *   @ORM\JoinColumn(name="category_sup", referencedColumnName="limit_sup")
+     *   @ORM\JoinColumn(name="category", referencedColumnName="id")
      * })
      */
     private $category;
