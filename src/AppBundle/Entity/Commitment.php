@@ -34,39 +34,85 @@ class Commitment
      * @ORM\Column(name="description", type="text", length=65535, nullable=false)
      */
     private $description;
-
+    
     /**
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="ActivityType", mappedBy="commitments")
+     * 
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\CommitmentQuestion", cascade={"persist", "remove"}, mappedBy="commitment")
      */
-    private $activityType;
-
+    private $questions;
+    
+    
     /**
+     * Original questions, needed in the case of removing questions
      * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Category", inversedBy="commitment")
-     * @ORM\JoinTable(name="category_commitment",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="commitment", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="category_inf", referencedColumnName="limit_inf"),
-     *     @ORM\JoinColumn(name="category_sup", referencedColumnName="limit_sup")
-     *   }
-     * )
      */
-    private $categoryInf;
+    private $originalQuestions;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->activityType = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->categoryInf = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->questions = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->originalQuestions = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+    
+    /**
+     * Get original questions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getOriginalQuestions()
+    {
+        return $this->originalQuestions;
     }
 
+    /**
+     * Set original uestions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function addOriginalQuestions($question)
+    {
+        $this->originalQuestions[] = $question;
+        return $this;
+    }
+
+    
+    /**
+     * Add establishment
+     *
+     * @param \AppBundle\Entity\CommitmentQuestion $question
+     *
+     * @return BaseUser
+     */
+    public function addQuestion(\AppBundle\Entity\CommitmentQuestion $question)
+    {
+        $this->questions[] = $question;
+        $question->setCommitment($this);
+        return $this;
+    }
+
+    /**
+     * Remove establishment
+     *
+     * @param \AppBundle\Entity\CommitmentQuestion $question
+     */
+    public function removeQuestion(\AppBundle\Entity\CommitmentQuestion $question)
+    {
+        $this->questions->removeElement($question);
+    }
+
+    /**
+     * Get questions
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getQuestions()
+    {
+        return $this->questions;
+    }
 
     /**
      * Get id
@@ -124,73 +170,5 @@ class Commitment
     public function getDescription()
     {
         return $this->description;
-    }
-
-    /**
-     * Add activityType
-     *
-     * @param \AppBundle\Entity\ActivityType $activityType
-     *
-     * @return Commitment
-     */
-    public function addActivityType(\AppBundle\Entity\ActivityType $activityType)
-    {
-        $this->activityType[] = $activityType;
-
-        return $this;
-    }
-
-    /**
-     * Remove activityType
-     *
-     * @param \AppBundle\Entity\ActivityType $activityType
-     */
-    public function removeActivityType(\AppBundle\Entity\ActivityType $activityType)
-    {
-        $this->activityType->removeElement($activityType);
-    }
-
-    /**
-     * Get activityType
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getActivityType()
-    {
-        return $this->activityType;
-    }
-
-    /**
-     * Add categoryInf
-     *
-     * @param \AppBundle\Entity\Category $categoryInf
-     *
-     * @return Commitment
-     */
-    public function addCategoryInf(\AppBundle\Entity\Category $categoryInf)
-    {
-        $this->categoryInf[] = $categoryInf;
-
-        return $this;
-    }
-
-    /**
-     * Remove categoryInf
-     *
-     * @param \AppBundle\Entity\Category $categoryInf
-     */
-    public function removeCategoryInf(\AppBundle\Entity\Category $categoryInf)
-    {
-        $this->categoryInf->removeElement($categoryInf);
-    }
-
-    /**
-     * Get categoryInf
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getCategoryInf()
-    {
-        return $this->categoryInf;
     }
 }

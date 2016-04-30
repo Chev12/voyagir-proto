@@ -4,10 +4,9 @@ namespace AppBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
 use AppBundle\Controller\ControllerSpecial;
 use AppBundle\Entity\Commitment;
+use AppBundle\Controller\Admin\Form\CommitmentType;
 
 /**
  * Description of CommitmentController
@@ -35,7 +34,7 @@ class CommitmentController extends ControllerSpecial {
      */
     public function adminAction ( Request $request, $_id = 0 )
     {
-        // Getting an existing establishment or a new one
+        // Getting an existing commitment or a new one
         $commitment = $this->getCommitment ( $_id );
         
         // Creating form
@@ -49,8 +48,7 @@ class CommitmentController extends ControllerSpecial {
         }
         
         // Show form
-        return $this->render( 'admin/basicAdmin.html.twig', array(
-            'object_name' => 'Controller',
+        return $this->render( 'admin/commitment/manage.html.twig', array(
             'form' => $form->createView(),
             'commitment' => $commitment
         ));
@@ -64,11 +62,7 @@ class CommitmentController extends ControllerSpecial {
     function buildForm ( $commitment )
     {
         $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
-        return $this->createFormBuilder($commitment)
-            ->add( 'description',TextType::class )
-            ->add( 'icon',       TextType::class )
-            ->add( 'save',       SubmitType::class, array( 'label' => $save_label ))
-            ->getForm();
+        return $this->createForm(CommitmentType::class, $commitment);
     }
     
     /**

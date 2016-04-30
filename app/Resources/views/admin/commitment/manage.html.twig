@@ -3,14 +3,94 @@
     {% if commitment.id != null %}
         Mise à jour d'un engagement
     {% else %}
-        Nouveal engagement
+        Nouvel engagement
     {% endif %}
 {% endblock %}
 {% block body %}
     <div style="width: 60%">
-        <h2> Informations générales </h2>
+        <h1> Informations générales </h1>
         {{ form_start(form) }}
-        {{ form_widget(form) }}
+        {{ form_row(form.icon) }}
+        {{ form_row(form.description) }}
+        {{ form_row(form.save) }}
+        
+        <h1>Questions</h1>
+        <ul class="questions" data-prototype="{{ form_widget(form.questions.vars.prototype)|e }}">
+            {% for q in form.questions %}
+                <li>
+                    <div style="display: inline-block; width: 5%;">{{ form_row(q.level) }}</div>
+                    <div style="display: inline-block; width: 5%;">{{ form_row(q.type) }}</div>
+                    <div style="display: inline-block; width: 85%;">{{ form_row(q.question) }}</div>
+                </li>
+            {% endfor %}
+        </ul>
         {{ form_end(form) }}
     </div>
+        
+    <script type="text/javascript">
+        var $collectionHolder;
+
+        // setup an "add a tag" link
+        var $addQuestionLink = $('<a href="#" class="add_question_link">Add a question</a>');
+        var $newLinkLi = $('<li></li>').append($addQuestionLink);
+
+        jQuery(document).ready(function() {
+            // Get the ul that holds the collection of tags
+            $collectionHolder = $('ul.questions');
+
+            // add the "add a tag" anchor and li to the tags ul
+            $collectionHolder.append($newLinkLi);
+
+            // count the current form inputs we have (e.g. 2), use that as the new
+            // index when inserting a new item (e.g. 2)
+            $collectionHolder.data('index', $collectionHolder.find(':input').length);
+            
+            // add a delete link to all of the existing question form li elements
+            $collectionHolder.find('li').each(function() {
+                addQuestionFormDeleteLink($(this));
+            });
+
+            $addQuestionLink.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // add a new tag form (see next code block)
+                addQuestionForm($collectionHolder, $newLinkLi);
+            });
+        });
+        
+        function addQuestionForm($collectionHolder, $newLinkLi) {
+            // Get the data-prototype explained earlier
+            var prototype = $collectionHolder.data('prototype');
+
+            // get the new index
+            var index = $collectionHolder.data('index');
+
+            // Replace '__name__' in the prototype's HTML to
+            // instead be a number based on how many items we have
+            var newForm = prototype.replace(/__name__/g, index);
+
+            // increase the index with one for the next item
+            $collectionHolder.data('index', index + 1);
+
+            // Display the form in the page in an li, before the "Add a tag" link li
+            var $newFormLi = $('<li></li>').append(newForm);
+            $newLinkLi.before($newFormLi);
+    
+            addQuestionFormDeleteLink($newFormLi);
+        }
+        
+        function addQuestionFormDeleteLink($questionFormLi) {
+            var $removeFormA = $('<a href="#">delete this question</a>');
+            $questionFormLi.append($removeFormA);
+
+            $removeFormA.on('click', function(e) {
+                // prevent the link from creating a "#" on the URL
+                e.preventDefault();
+
+                // remove the li for the tag form
+                $questionFormLi.remove();
+            });
+        }
+    </script>
 {% endblock %}

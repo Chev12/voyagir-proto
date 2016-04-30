@@ -43,15 +43,14 @@ class CommitmentQuestion
     private $level;
 
     /**
-     * @var \CommitmentQuestion
+     * @var \Commitment
      *
-     * @ORM\ManyToOne(targetEntity="CommitmentQuestion")
+     * @ORM\ManyToOne(targetEntity="Commitment", inversedBy="questions")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="commitment", referencedColumnName="id")
      * })
      */
     private $commitment;
-
 
 
     /**
@@ -139,11 +138,11 @@ class CommitmentQuestion
     /**
      * Set commitment
      *
-     * @param \AppBundle\Entity\CommitmentQuestion $commitment
+     * @param \AppBundle\Entity\Commitment $commitment
      *
-     * @return CommitmentQuestion
+     * @return Commitment
      */
-    public function setCommitment(\AppBundle\Entity\CommitmentQuestion $commitment = null)
+    public function setCommitment(\AppBundle\Entity\Commitment $commitment = null)
     {
         $this->commitment = $commitment;
 
@@ -153,7 +152,7 @@ class CommitmentQuestion
     /**
      * Get commitment
      *
-     * @return \AppBundle\Entity\CommitmentQuestion
+     * @return \AppBundle\Entity\Commitment
      */
     public function getCommitment()
     {
