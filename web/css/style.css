@@ -1,13 +1,18 @@
 /* Style.css */
 body{ 
-    margin:0px;
-    margin-top: 55px;
+    margin: 0px;
+    margin-top: 40px;
     background: #f8f8f0;
 }
 
 a {
     text-decoration: none;
-    color:#444485;
+    color: #444485;
+}
+
+h1 {
+    color : #444485;
+    font-family: 'Sue Ellen Francisco', cursive;
 }
 
 .logo {
@@ -17,6 +22,10 @@ a {
     width: 80%;
     max-width: 800px;
     min-width: 250px;
+}
+
+.required {
+    text-decoration: underline;
 }
 
 .icon {
@@ -29,7 +38,41 @@ a {
 }
 
 #page{
-    margin-left: 60px;
+    width: 70%;
+    margin: auto;
+    padding-top: 10px;
+}
+
+/* Homepage */
+.thumbnail-title{
+    font-family: 'Sue Ellen Francisco', cursive;
+    color: #33ccaf;
+}
+
+#search-bar {
+    margin-top: 10px;
+    background-color: #fafaf6; 
+    border: thin solid #dfdfd8;
+}
+
+.quicksearch {
+    margin-top: 20px;
+}
+
+/* Establishment page */
+.etb-left-panel {
+    padding-right: 0px;
+}
+
+.etb-right-panel {
+    background-color: #33ccaf;
+    color: white
+}
+
+#etb-picture{
+    //border: 1px black solid; 
+    height: 250px;
+    background-size: cover;
 }
 
 /* Banner */
@@ -95,7 +138,7 @@ a {
 }
 
 /** Menu **/
-.menu_btn {
+.menu-btn {
     background: #33ccaf url(../img/menu_bg.png) center center no-repeat;
     display: block;
     height: 42px;
@@ -156,7 +199,6 @@ a {
     top:0;
     right:-47px; 
 }
-
 
 /* 480px */
 @media (max-width: 480px){

@@ -17,17 +17,13 @@ class EstablishmentActivityController extends ControllerSpecial
      */
     private $activityService;
     /**
-     * @var \AppBundle\Services\Business\BusinessService
+     * @var \AppBundle\Services\Business\EstablishmentService
      */
     private $establishmentService;
     
     public function init(){
-        $this->activityService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'EstablishmentActivity' );
-        $this->establishmentService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'Establishment' );
+        $this->activityService = $this->getBusinessService ( 'EstablishmentActivity' );
+        $this->establishmentService = $this->getBusinessService ( 'Establishment' );
     }
     
     /**
@@ -76,7 +72,7 @@ class EstablishmentActivityController extends ControllerSpecial
     }
     
     /**
-     * Build the form for editin an activity
+     * Build the form for editing an activity
      * 
      * @param type $establishmentActivity
      * @return Form

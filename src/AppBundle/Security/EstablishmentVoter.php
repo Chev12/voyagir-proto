@@ -6,11 +6,22 @@ use AppBundle\Entity\Establishment;
 use FOS\UserBundle\Model\User;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\Voter;
+use Symfony\Component\Security\Core\Authorization\AccessDecisionManagerInterface;
 
 class EstablishmentVoter extends Voter
 {
     const VIEW = 'view';
     const EDIT = 'edit';
+    
+    /**
+     * @var AccessDecisionManagerInterface
+     */
+    private $decisionManager;
+
+    public function __construct(AccessDecisionManagerInterface $decisionManager)
+    {
+        $this->decisionManager = $decisionManager;
+    }
 
     protected function supports($attribute, $subject)
     {
@@ -37,7 +48,12 @@ class EstablishmentVoter extends Voter
         }
 
         $etb = $subject;
-
+        
+        // Admin Role can edit everything
+        if ($this->decisionManager->decide($token, array('ROLE_ADMIN'))) {
+            return true;
+        }
+        
         switch($attribute) {
             case self::VIEW:
                 return $this->canView($etb, $user);

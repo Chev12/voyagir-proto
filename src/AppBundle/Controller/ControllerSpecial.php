@@ -21,6 +21,17 @@ abstract class ControllerSpecial extends Controller {
     }
     
     /**
+     * Get the business service for target entity
+     * @param string $name Name of the entity
+     * @return \AppBundle\Services\Business\BusinessService
+     */
+    public function getBusinessService ( $name ) {
+        return $this->get( 'app.business_service_factory' )
+                    ->build( $name );
+    }
+
+
+    /**
      * Initialize stuff after the setContainer
      */
     public abstract function init();

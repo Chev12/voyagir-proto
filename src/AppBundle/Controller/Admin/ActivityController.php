@@ -23,9 +23,7 @@ class ActivityController extends ControllerSpecial {
     private $activityService;
     
     public function init(){
-        $this->activityService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'ActivityType' );
+        $this->activityService = $this->getBusinessService ( 'ActivityType' );
     }
     
     /**
@@ -80,6 +78,19 @@ class ActivityController extends ControllerSpecial {
                                         }))
             ->add( 'save',  SubmitType::class, array( 'label' => $save_label ))
             ->getForm();
+    }
+    
+    /**
+     * @Route("delete/act", name="act_admin_delete")
+     */
+    public function deleteAction( Request $request ){
+        if($request->getMethod( "POST" )){
+            $id = $request->get( "idAct" );
+            $activity = $this->activityService->get( $id );
+            $this->activityService->remove( $activity );
+        }
+        
+        return $this->redirectToRoute( 'admin_home' );
     }
     
     /**

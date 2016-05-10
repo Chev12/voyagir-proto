@@ -1,32 +1,86 @@
 {% extends "base.html.twig" %}
 {% block title %}
     {% if establishment.id != null %}
-        {{ establishment.name }} - Mise à jour
+        {{ establishment.name }} - {{ 'establishment.manage.title_edit'|trans}}
     {% else %}
-        Nouvel établissement
+        {{ 'establishment.manage.title_new'|trans}}
     {% endif %}
 {% endblock %}
 {% block body %}
-    <div style="width: 60%">
-        <h2> Informations générales </h2>
-        {{ form_start(form) }}
-        {{ form_widget(form) }}
-        {{ form_end(form) }}
+    {% if establishment.id != null %}
+    <div id="etb-picture"
+         alt="{{ 'establishment.picture'|trans}}"
+         style="background-image: url('{{ asset('img/etb/' ~ establishment.imageName) }}');
+                background-position-y: -{{ establishment.imageOffset }}px">
     </div>
+    {% endif %}
+    {{ form_start(form) }}
+    <div class="row">
+        <div class="col-md-6 col-xs-12">
+            <h1> {{ 'establishment.manage.gen_info'|trans}} </h1>
+            {{ form_row(form.name) }}
+            {{ form_row(form.category) }}
+            {{ form_row(form.description) }}
+            {{ form_row(form.customCommitments) }}
+            {{ form_row(form.usefulInfo) }}
+            {% if establishment.id != null %}
+            {% endif %}
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <h1> {{ 'establishment.manage.picture'|trans}} </h1>
+            {{ form_row(form.imageFile) }}
+            <div class="row">
+                <span class="col-sm-2"></span><em class="col-sm-10">{{ 'establishment.manage.offset_help'|trans}}</em>
+            </div>
+            {{ form_row(form.imageOffset) }}
+            {{ form_row(form.imageName) }}
+        </div>
+    </div>
+    <div clas="row">
+        <div class="col-md-6 col-xs-12">
+            <h1> {{ 'establishment.manage.location'|trans}} </h1>
+            {{ form_row(form.adress) }}
+            {{ form_row(form.adressRegion) }}
+            {{ form_row(form.adressCity) }}
+            {{ form_row(form.adressCountry) }}
+            {{ form_row(form.coord) }}
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <h1> {{ 'establishment.manage.contact'|trans}} </h1>
+            {{ form_row(form.contactMail) }}
+            {{ form_row(form.contactFb) }}
+            {{ form_row(form.contactTwt) }}
+            {{ form_row(form.contactWebsite) }}
+            {{ form_row(form.contactPhone) }}
+        </div>
+    </div>
+    <div clas="row">
+        <div class="col-md-6 col-xs-12">
+        </div>
+        <div class="col-md-6 col-xs-12">
+            <label class="col-sm-2">
+                {{ 'establishment.manage.thumbnail'|trans}} </h2>
+            </label>
+            <span class="col-sm-10">
+                <img class="img-thumbnail" width="304" height="236" src="{{ asset('img/etb/' ~ establishment.imageName) }}" />
+            </span>
+        </div>
+    </div>
+    {{ form_end(form) }}
     {% if establishment.id != null %}
     <div>
-        <a href="{{ path("etb_activity_new", { '_idEtb' : establishment.id }) }}"> Proposer une activité </a>
-    </div>
-    <div>
-        <h2> Activités </h2>
+        <h1> {{ 'establishment.activities'|trans}} </h1>
+        <p>
+            <a href="{{ path("etb_activity_new", { '_idEtb' : establishment.id }) }}"> {{ 'establishment.manage.new_act'|trans}} </a>
+        </p>
+        {% if not (establishment.activities is empty) %}
         <table class="table" style="width: 40%;">
             <tr>
-                <th>Id</th>
-                <th>Level</th>
-                <th>Type</th>
-                <th>Description</th>
-                <th>Prix</th>
-                <th>Actions</th>
+                <th>{{ 'activity.level'|trans}}</th>
+                <th>{{ 'activity.type'|trans}}</th>
+                <th>{{ 'activity.description'|trans}}</th>
+                <th>{{ 'activity.price'|trans}}</th>
+                <th>{{ 'establishment.manage.actions'|trans}}</th>
             </tr>
             {% for activity in establishment.activities %}
                 <tr>
@@ -40,19 +94,23 @@
                                             '_idEtb' : establishment.id,
                                             '_level' : activity.level }) }}" 
                            class="btn btn-primary"> 
-                            Edit 
+                            {{ 'establishment.manage.edit_act'|trans}} 
                         </a>
                         <form action="{{ path("etb_activity_delete", { '_idEtb' : establishment.id }) }}">
                             <input type="hidden" name="idAct" value="{{ activity.id }}" />
-                            <input type="submit" value="Supprimer" class="btn btn-primary" />
+                            <input type="submit" value="{{ 'establishment.manage.del_act'|trans}}" class="btn btn-primary" />
                         </form>
                     </td>
                 <tr>
             {% endfor %}
         </table>
+        {% endif %}
     </div>
     {% endif %} 
     <div>
-        <span><strong>Owner : </strong> {{ establishment.userOwner.id }} - {{ establishment.userOwner.username }} </span>
+        <span><strong>{{ 'establishment.owner'|trans}} : </strong> {{ establishment.userOwner.id }} - {{ establishment.userOwner.username }} </span>
     </div>
+{% endblock %}
+{% block javascripts %}
+    <script src="{{ asset('js/picture_management.js') }}"></script>
 {% endblock %}

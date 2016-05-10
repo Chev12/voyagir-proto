@@ -1,38 +1,48 @@
 {% extends 'base.html.twig' %}
 
+{% block title %}
+    {{ 'home.title'|trans }}
+{% endblock %}
 {% block body %}
-    
-    <br />
-    <h1>Page d'accueil</h1>
-    <p>Liste des établissements</p>
-    <table class="table" style="width: 40%;">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Owner</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
+    <div class="row" id="search-bar">
+        <div class="col-md-2 col-xs-12">
+            <h1> {{ 'form.label.search'|trans }}</h1>
+        </div>
+        {{ form_start(form) }}
+        <div class="col-md-3 col-xs-12 quicksearch" />
+            {{ form_widget(form.adressCity, {'attr': {'placeholder': 'form.label.city'|trans}}) }}
+        </div>
+        <div class="col-md-3 col-xs-12 quicksearch" />
+            {{ form_widget(form.adressCountry) }}
+        </div>
+        <div class="col-md-3 col-xs-12 quicksearch" />
+            {{ form_widget(form.category) }}
+        </div>
+        <div class="col-md-1 col-xs-12 quicksearch" />
+            {{ form_widget(form.search) }}
+        </div>
+        {{ form_widget(form._token) }}
+        {{ form_end(form, {'render_rest': false}) }}
+    </div>
+    <div class="row">
+        <center><img src="{{ asset('img/dreamcatcher-15b.png') }}" width="200px" style="margin-top: 20px;" /></center>
+    </div>
+    <h1 class="row"> {{ 'home.etb_list'|trans }} </h1>
+    <div class="row">
         {% for e in establishments %}
-            <tr>
-                <td> {{ e.id }} </td>
-                <td><a href="{{ path("etb_detail", { '_id' : e.id }) }}"> {{ e.name }} </a></td>
-                <td> {{ e.userOwner.username }} </td>
-                <td> 
-                    {% if is_granted('edit', e) %}
-                    <form action="{{ path("etb_manage_delete") }}">
-                        <input type="hidden" name="idEtb" value="{{ e.id }}" />
-                        <input type="submit" value="Supprimer" class="btn btn-primary" />
-                    </form>
-                    {% endif %}
-                </td>
-            </tr>
+        <div class="col-sm-12 col-md-4">
+            <div class="home thumbnail">
+                <a href="{{ path("etb_detail", { '_id' : e.id }) }}">
+                    <img src="{{ asset('img/etb/') ~ e.imageName }}" alt="{{ e.name }}">
+                </a>
+                <div class="caption">
+                    <h2><a class="thumbnail-title" href="{{ path("etb_detail", { '_id' : e.id }) }}">
+                            {{ e.name }}, {{ e.adressCountry.nameFrFr }}
+                    </a></h2>
+                    <p>{{ e.description }}</p>
+                </div>
+            </div>
+        </div>
         {% endfor %}
-        </tbody>
-        <tfoot>
-            
-        </tfoot>
-    </table>
+    </div>
 {% endblock %}

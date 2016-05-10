@@ -5,9 +5,71 @@ banner:
     facebook: Voyagir on Facebook!
     english: English version
     french: Version française
-        
+     
+home:
+    title: Homepage
+    etb_list: Newly validated establishments
+
 establishment:
+    id: Number
+    name: Name
     picture: Picture of the place
+    owner: Owner
+    desc: Description
+    useful_info: Useful informations
+    custom_commit: Commitments
+    activities: Activities
+    search: Search for an establishment
     manage:
+        title_new: New establishment
+        title_edit: Updating
         link: Administrate
         save: Save
+        new_act: Add an activity
+        actions: Actions
+        gen_info: General informations
+        location: Location
+        contact: Contact
+        picture: Profile picture
+        offset_help: You can adjust the vertical position of your picture inside its box, try it !
+        thumbnail: Thumbnail
+        edit_act: Edit
+        del_act: Remove
+
+activity:
+    level: Level
+    type: Type
+    description: Description
+    price: Price
+        
+form:
+    placeholder:
+        country: Select a country...
+        category: Cateogry...
+    label:
+        name: Name
+        desc: Description
+        useful_info: Useful informations
+        custom_commit: Commitments
+        adress : Adress
+        category: Category
+        city: City
+        pic: Picture
+        pic_offset: Offset (px)
+        cur_pic: Current picture
+        region: Area
+        country: Country
+        coord: Coordinates (GPS)
+        save: Save
+        delete: Delete
+        validate: Validate
+        search: Search
+        contact_mail: E-Mail
+        contact_phone: Phone number
+        contact_fb: Facebook page
+        contact_twt: Twitter page
+        contact_website: Web site
+
+user:
+    change_pwd: Change password
+    

@@ -36,7 +36,7 @@ twig:
     debug:            "%kernel.debug%"
     strict_variables: "%kernel.debug%"    
     form:
-        resources: ['bootstrap_3_layout.html.twig']
+        resources: ['bootstrap_3_horizontal_layout.html.twig']
         # resources: ['bootstrap_3_horizontal_layout.html.twig']
 
 # Assetic Configuration
@@ -85,3 +85,19 @@ fos_user:
     db_driver: orm
     firewall_name: main
     user_class: AppBundle\Entity\BaseUser
+    profile:
+        form:
+            type: AppBundle\Controller\Form\ProfileFormType
+    
+vich_uploader:
+    db_driver: orm
+    mappings:
+        establishment_image:
+            uri_prefix:         /img/etb
+            upload_destination: %kernel.root_dir%/../web/img/etb
+            namer:
+                service: vich_uploader.namer_property
+                options: { property: 'imageNameById'}
+            inject_on_load:     true
+            delete_on_update:   true
+            delete_on_remove:   true

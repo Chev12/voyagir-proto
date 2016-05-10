@@ -5,32 +5,39 @@
 {% endblock %}
 
 {% block body %}
-    <div class="panel panel-default">
-        <div class="panel-heading">
-            <!--<div style="float: left; border: 1px black solid; width: 300px; height: 250px; margin: 10px; background: url('{{ asset('img/1.jpg') }}'); background-size: cover">
-                <center>{{ 'establishment.picture'|trans}}</center>
-            </div>-->
-            <div>
-                <h1>{{ establishment.name }}</h1>
-                {% if is_granted('edit', establishment) %}
-                    <a href="{{ path("etb_manage_update", { '_id' : establishment.id }) }}">{{ 'establishment.manage.link'|trans}}</a>
-                {% endif %}
-                <p>{{ establishment.adress }}</p>
-            </div>
+    <div id="etb-picture" class="row"
+         alt="{{ 'establishment.picture'|trans}}"
+         style="background-image: url('{{ asset('img/etb/' ~ establishment.imageName) }}');
+                background-position-y: -{{ establishment.imageOffset }}px">
+    </div>
+    <div class="row">
+        <div class="col-md-8 col-xs-12 etb-left-panel">
+            <h1>{{ establishment.name }}</h1>
+            {% if is_granted('edit', establishment) %}
+                <a href="{{ path("etb_manage_update", { '_id' : establishment.id }) }}">{{ 'establishment.manage.link'|trans}}</a>
+            {% endif %}
+            <h2>{{ 'establishment.desc'|trans}}</h2>
             <p>{{ establishment.description }}</p>
+            <h2>{{ 'establishment.custom_commit'|trans}}</h2>
+            <p>{{ establishment.customCommitments }}</p>
         </div>
-        <div class="panel-body">
-            <h2> Activités </h2>
-            <table class="table" style="width: 30%;">
-                {% for activity in establishment.activities %}
-                    <tr>
-                        <td>{{ activity.activityType.name }}</td>
-                        <td>{{ activity.description }}</td>
-                        <td>{{ activity.price }}€</td>
-                    <tr>
-                {% endfor %}
-            </table>
+        <div class="col-md-4 col-xs-12 etb-right-panel"> 
+            <h2>{{ 'establishment.useful_info'|trans}}</h2>
+            <p>{{ establishment.usefulInfo }}</p>
+            <p>{{ establishment.adress }}, {{ establishment.adressCity }}</p>
+            <p>{{ establishment.adressRegion }}, {{ establishment.adressCountry.nameFrFr }}</p>
+            <p>{{ establishment.contactPhone }}</p>
         </div>
     </div>
+    <h2> {{ 'establishment.activities'|trans}} </h2>
+    <table class="table" style="width: 30%;">
+        {% for activity in establishment.activities %}
+            <tr>
+                <td>{{ activity.activityType.name }}</td>
+                <td>{{ activity.description }}</td>
+                <td>{{ activity.price }}€</td>
+            <tr>
+        {% endfor %}
+    </table>
     
 {% endblock %}

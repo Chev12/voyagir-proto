@@ -56,6 +56,7 @@ class BusinessService {
         if($doFlush){
             $this->flush();
         }
+        return $entity;
     }
     
     /**
@@ -77,7 +78,15 @@ class BusinessService {
         $this->em->flush();
     }
     
-    public function __construct($em) {
+    /**
+     * Create a new query builder
+     * @return \Doctrine\ORM\QueryBuilder
+     */
+    public function getQueryBuilder () {
+        return $this->em->createQueryBuilder();
+    }
+    
+    public function __construct ( $em ) {
         $this->em = $em;
     }
     

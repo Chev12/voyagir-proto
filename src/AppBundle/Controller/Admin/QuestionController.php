@@ -4,8 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Controller\Admin\Form\QuestionType;
 use AppBundle\Controller\ControllerSpecial;
 use AppBundle\Entity\Question;
 
@@ -22,9 +21,7 @@ class QuestionController extends ControllerSpecial {
     private $questionService;
     
     public function init(){
-        $this->questionService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'CommitmentQuestion' );
+        $this->questionService = $this->getBusinessService ( 'CommitmentQuestion' );
     }
     
     /**
@@ -39,7 +36,7 @@ class QuestionController extends ControllerSpecial {
         $question = $this->getQuestion ( $_id );
         
         // Creating form
-        $form = $this->buildForm ( $question );
+        $form = $this->createForm ( QuestionType::class );
         $form->handleRequest ( $request );
 
         // Saving
@@ -54,21 +51,6 @@ class QuestionController extends ControllerSpecial {
             'form' => $form->createView(),
             'question' => $question
         ));
-    }
-    
-    /**
-     * Create the question form
-     * @param Question $question
-     * @return Form
-     */
-    function buildForm ( $question )
-    {
-        $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
-        return $this->createFormBuilder($question)
-            ->add( 'question',   TextType::class )
-            ->add( 'type',       IntegerType::class )
-            ->add( 'save',       SubmitType::class, array( 'label' => $save_label ))
-            ->getForm();
     }
     
     /**

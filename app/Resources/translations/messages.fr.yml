@@ -5,9 +5,70 @@ banner:
     facebook: Voyagir sur Facebook!
     english: English version
     french: Version française
-        
+
+home:
+    title: Accueil
+    etb_list: Nouveaux établissements
+
 establishment:
+    id: Numéro
+    name: Nom
     picture: Photo de l'établissement
+    owner: Propriétaire
+    desc: Description
+    useful_info: Info pratiques
+    custom_commit: Engagements
+    activities: Activités
+    search: Chercher un établissement
     manage:
+        title_new: Nouvel établissement
+        title_edit: Mise à jour
         link: Administrer
         save: Enregistrer
+        new_act: Proposer une activité
+        actions: Actions
+        gen_info: Informations générales
+        location: Coordonnées
+        contact: Contact
+        picture: Image de profil
+        offset_help: Vous pouvez ajuster la position verticale de l'image dans son emplacement, essayez !
+        thumbnail: Aperçu
+        edit_act: Editer
+        del_act: Supprimer
+
+activity:
+    level: Ordre
+    type: Type
+    description: Description
+    price: Prix
+        
+form:
+    placeholder:
+        country: Choisissez un pays...
+        category: Catégorie...
+    label:
+        name: Nom
+        desc: Description
+        useful_info: Info pratiques
+        category: Catégorie
+        custom_commit: Engagements
+        adress : Adresse
+        city: Ville
+        pic: Couverture
+        pic_offset: Décalage (px)
+        cur_pic: Couverture actuelle
+        region: Région
+        country: Pays
+        coord: Coordonnées (GPS)
+        save: Enregistrer
+        delete: Supprimer
+        validate: Valider
+        search: Rechercher
+        contact_mail: E-Mail
+        contact_phone: Téléphone
+        contact_fb: Page Facebook
+        contact_twt: Page Twitter
+        contact_website: Site web
+        
+user:
+    change_pwd: Modification du mot de passe

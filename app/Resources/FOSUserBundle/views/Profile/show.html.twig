@@ -10,11 +10,20 @@
         <span><a href="{{ path("etb_manage_create") }}">Nouveau</a></span>
         <table class="table table-striped">
             <tr>
-                <th>ID</th><th>Nom</th>
+                <th>ID</th>
+                <th>Nom</th>
+                <th></th>
             </tr>
             {% for etb in user.establishments %}
                 <tr>
-                    <td>{{ etb.id }} </td><td><a href="{{ path("etb_detail", { '_id' : etb.id }) }}">{{ etb.name }}</a></td>
+                    <td>{{ etb.id }} </td>
+                    <td><a href="{{ path("etb_detail", { '_id' : etb.id }) }}">{{ etb.name }}</a></td>
+                    <td>
+                        <form action="{{ path("etb_manage_delete") }}">
+                            <input type="hidden" name="idEtb" value="{{ etb.id }}" />
+                            <input type="submit" value="Supprimer" class="btn btn-primary" />
+                        </form>
+                    </td>
                 </tr>
             {% endfor %}
         </table>

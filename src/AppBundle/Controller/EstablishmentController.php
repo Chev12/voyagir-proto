@@ -4,8 +4,8 @@ namespace AppBundle\Controller;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Controller\Form\EstablishmentType;
+use AppBundle\Controller\Form\EstablishmentSearchType;
 use AppBundle\Entity\Establishment;
 
 class EstablishmentController extends ControllerSpecial
@@ -16,9 +16,7 @@ class EstablishmentController extends ControllerSpecial
     private $establishmentService;
     
     public function init(){
-        $this->establishmentService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'Establishment' );
+        $this->establishmentService = $this->getBusinessService( 'Establishment' );
     }
     
     /**
@@ -50,7 +48,7 @@ class EstablishmentController extends ControllerSpecial
         }
         
         // Creating form
-        $form = $this->buildForm ( $establishment );
+        $form = $this->createForm(EstablishmentType::class, $establishment);
         $form->handleRequest ( $request );
 
         // Saving
@@ -70,27 +68,34 @@ class EstablishmentController extends ControllerSpecial
     }
     
     /**
-     * Create the estbalishment form
-     * @param Establishment $establishment
-     * @return Form
+     * @Route("/search/etb/", name="etb_search_form")
      */
-    function buildForm ( $establishment )
+    public function searchAction ( Request $request )
     {
-        $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
-        $form = $this->createFormBuilder($establishment)
-            ->add( 'name',       TextType::class )
-            ->add( 'description',TextType::class )
-            ->add( 'adress',     TextType::class )
-            ->add( 'save',       SubmitType::class, array( 'label' => $save_label ))
-            ->getForm();
-        return $form;
+        $etbCriteria = new Establishment();
+        // Creating form
+        $form = $this->createForm ( EstablishmentSearchType::class, $etbCriteria );
+        $form->handleRequest ( $request );
+
+        // Search
+        if ( $form->isValid() ) {
+            $establishments = $this->establishmentService->search( $etbCriteria );
+            return $this->render( 'establishment/results.html.twig', array(
+                'establishments' => $establishments
+            ));
+        }
+        
+        // Show form
+        return $this->render( 'establishment/search.html.twig', array(
+            'form' => $form->createView(),
+            'establishment' => $etbCriteria
+        ));
     }
     
     /**
      * @Route("delete/etb", name="etb_manage_delete")
      */
-    public function delete( Request $request ){
-        $this->get('logger')->info('lol');
+    public function deleteAction( Request $request ){
         if($request->getMethod( "POST" )){
             $id = $request->get( "idEtb" );
             $establishment = $this->establishmentService->get( $id );
@@ -100,6 +105,19 @@ class EstablishmentController extends ControllerSpecial
         }
         
         return $this->redirectToRoute( 'homepage' );
+    }
+    
+    /**
+     * @Route("validate/etb", name="etb_admin_validate")
+     */
+    public function validateAction( Request $request ){
+        if($request->getMethod( "POST" )){
+            $id = $request->get( "idEtb" );
+            $establishment = $this->establishmentService->get( $id );
+            $this->establishmentService->validate( $establishment );
+        }
+        
+        return $this->redirectToRoute( 'admin_home' );
     }
     
     /**
@@ -115,7 +133,7 @@ class EstablishmentController extends ControllerSpecial
         // Creating a new one
         else{
             $establishment = new Establishment();
-            $establishment->setIdUserOwner($this->getUser());
+            $establishment->setUserOwner($this->getUser());
         }
         return $establishment;
     }

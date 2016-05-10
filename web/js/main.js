@@ -1,10 +1,12 @@
+
 $(document).ready(function() 
 {
+    // Menu
     $(".close").css("display", "none");
  
     var isMenuOpen = false;
  
-    $('.menu_btn').click(function()
+    $('.menu-btn').click(function()
     {
         if (!isMenuOpen)
         {
@@ -30,13 +32,18 @@ $(document).ready(function()
                 left : '-240px'
             });
             $("#page").clearQueue().animate({
-                "margin-left" : '60px'
+                "margin-left" : 'auto'
             });
              
             $(this).fadeOut(200);
-            $(".menu_btn").fadeIn(300);
+            $(".menu-btn").fadeIn(300);
              
             isMenuOpen = false;
         }
+    });
+    
+    // <h1> 
+    $('h1').each(function() {
+        $(this).prepend("<i class=\"fa fa-envira\" aria-hidden=\"true\"></i>&nbsp;");
     });
 });

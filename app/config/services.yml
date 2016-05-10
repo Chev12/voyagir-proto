@@ -7,14 +7,13 @@ services:
 #    0service_name:
 #        class: AppBundle\Directory\ClassName
 #        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-    utils.user_security:
-        class: AppBundle\Services\UserSecurity
-        arguments: ['@security.token_storage', '@security.authorization_checker']
     app.business_service_factory:
         class: AppBundle\Services\Business\BusinessServiceFactory
         arguments: ['@doctrine', '@logger']
+    # Voter for Establishment edit accessibility
     app.etb_voter:
         class: AppBundle\Security\EstablishmentVoter
+        arguments: ['@security.access.decision_manager']
         tags:
             - { name: security.voter }
         # small performance boost
@@ -25,3 +24,9 @@ services:
         arguments: ['@logger']
         tags:
             - { name: doctrine.event_subscriber, event: prePersist, connection: default }
+            
+    # Edit profile form        
+    app.form.edit_profile:
+        class: AppBundle\Controller\Form\ProfileFormType
+        tags:
+            - { name: form, alias: app_user_profile }

@@ -21,9 +21,7 @@ class CommitmentController extends ControllerSpecial {
     private $commitmentService;
     
     public function init(){
-        $this->commitmentService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'Commitment' );
+        $this->commitmentService = $this->getBusinessService ( 'Commitment' );
     }
     
     /**
@@ -63,6 +61,19 @@ class CommitmentController extends ControllerSpecial {
     {
         $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
         return $this->createForm(CommitmentType::class, $commitment);
+    }
+    
+    /**
+     * @Route("delete/cmt", name="cmt_admin_delete")
+     */
+    public function deleteAction( Request $request ){
+        if($request->getMethod( "POST" )){
+            $id = $request->get( "idCmt" );
+            $activity = $this->commitmentService->get( $id );
+            $this->commitmentService->remove( $activity );
+        }
+        
+        return $this->redirectToRoute( 'admin_home' );
     }
     
     /**

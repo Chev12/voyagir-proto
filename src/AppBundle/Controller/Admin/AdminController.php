@@ -16,14 +16,15 @@ class AdminController extends ControllerSpecial
      * @var \AppBundle\Services\Business\ActivityTypeService
      */
     private $activityService;
+    /**
+     * @var \AppBundle\Services\Business\EstablishmentService
+     */
+    private $establishmentService;
     
     public function init(){
-        $this->commitmentService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'Commitment' );
-        $this->activityService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'ActivityType' );
+        $this->commitmentService = $this->getBusinessService ( 'Commitment' );
+        $this->activityService = $this->getBusinessService ( 'ActivityType' );
+        $this->establishmentService = $this->getBusinessService ( 'Establishment' );
     }
     
     /**
@@ -33,10 +34,12 @@ class AdminController extends ControllerSpecial
     {
         $commitments = $this->commitmentService->findAll();
         $activities = $this->activityService->findAll();
+        $establishments = $this->establishmentService->findNotValidated();
         
         return $this->render('admin/index.html.twig', array(
             'commitments' => $commitments,
-            'activities' => $activities
+            'activities' => $activities,
+            'establishments' => $establishments
         ));
     }
 }
