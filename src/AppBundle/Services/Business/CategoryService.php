@@ -2,6 +2,8 @@
 
 namespace AppBundle\Services\Business;
 
+use AppBundle\Entity\Category;
+
 /**
  * Description of CategoryService
  *
@@ -27,33 +29,35 @@ class CategoryService extends BusinessService {
     }
     
     /**
-     * Find all entities in repository
-     */
-    public function findAll(){
-        return $this->repo->findAll();
-    }
-    
-    /**
-     * Persist an entity (create/update)
-     * @param type $entity
+     * Persist a category (create/update)
+     * @param Category $category
+     * @param Category $parent
      * @param boolean $doFlush
      */
-    public function save ( $entity, $doFlush = true) {
-        $this->em->persist( $entity );
-        if($doFlush){
-            $this->flush();
-        }
-    }
-    
-    /**
-     * Delete an entity
-     * @param type $entity
-     * @param boolean $doFlush
-     */
-    public function remove ( $entity, $doFlush = true ) {
-        $this->em->remove( $entity );
-        if($doFlush){
-            $this->flush();
-        }
+    public function saveWithParent ( $category, $parent, $doFlush = true) {
+
+        $limitSupParent = $parent->getLimitSup();
+        
+        $category->setLimitInf( $limitSupParent );
+        $category->setLimitSup( $limitSupParent + 1 );
+        $category->setLevel( $parent->getLevel() + 1 );
+        
+        $parent->setLimitSup($limitSupParent + 2);
+        
+        // MAJ catégorie suivante
+        /*update category set
+        limit_inf = limit_inf + 2,
+                limit_sup = limit_sup + 2
+                where limit_inf > limitSupParent;*/
+        
+        // MAJ catégories parentes
+        /*update category set
+            limit_sup = limit_sup + 2
+        where limit_sup >= limitSupParent
+                and limit_inf < limitSup*/
+        
+        parent::save($category, false);
+        parent::save($parent, $doFlush);
+        return $category;
     }
 }

@@ -81,7 +81,7 @@ class ActivityController extends ControllerSpecial {
     }
     
     /**
-     * @Route("delete/act", name="act_admin_delete")
+     * @Route("admin/delete/act", name="act_admin_delete")
      */
     public function deleteAction( Request $request ){
         if($request->getMethod( "POST" )){

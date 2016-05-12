@@ -4,47 +4,44 @@ namespace AppBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+use AppBundle\Controller\Admin\Form\CategoryType;
 use AppBundle\Controller\ControllerSpecial;
-use AppBundle\Entity\Question;
+use AppBundle\Entity\Category;
 
 /**
- * Description of QuestionController
+ * Description of CategoryController
  *
  * @author Mat
  */
-class QuestionController extends ControllerSpecial {
+class CategoryController extends ControllerSpecial {
     
     /**
-     * @var AppBundle\Services\Business\QuestionService
+     * @var AppBundle\Services\Business\CategoryService
      */
-    private $questionService;
+    private $categoryService;
     
     public function init(){
-        $this->questionService = 
-                $this->get( 'app.business_service_factory' )
-                     ->build( 'CommitmentQuestion' );
+        $this->categoryService = $this->getBusinessService ( 'Category' );
     }
     
     /**
-     * @Route("/admin/question/{_id}", name="qtn_admin_update",
+     * @Route("/admin/category/{_id}", name="cat_admin_update",
      *                            defaults={"_id" = 0})
-     * @Route("/admin/question/", name="qtn_admin_create",
+     * @Route("/admin/category/", name="cat_admin_create",
      *                      defaults={"_id" = 0})
      */
     public function adminAction ( Request $request, $_id = 0 )
     {
-        // Getting an existing question or a new one
-        $question = $this->getQuestion ( $_id );
+        // Getting an existing category or a new one
+        $category = $this->getCategory ( $_id );
         
         // Creating form
-        $form = $this->buildForm ( $question );
+        $form = $this->createForm ( CategoryType::class, $category );
         $form->handleRequest ( $request );
 
         // Saving
         if ( $form->isValid() ) {
-            $question = $this->questionService->save( $question );
+            $category = $this->categoryService->saveWithParent( $category, $form->getData()->getParent() );
             return $this->forward('AppBundle:Admin\Admin:index');
         }
         
@@ -52,39 +49,37 @@ class QuestionController extends ControllerSpecial {
         return $this->render( 'admin/basicAdmin.html.twig', array(
             'object_name' => 'Controller',
             'form' => $form->createView(),
-            'question' => $question
+            'category' => $category
         ));
     }
     
     /**
-     * Create the question form
-     * @param Question $question
-     * @return Form
+     * @Route("admin/delete/cat", name="cat_admin_delete")
      */
-    function buildForm ( $question )
-    {
-        $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
-        return $this->createFormBuilder($question)
-            ->add( 'question',   TextType::class )
-            ->add( 'type',       IntegerType::class )
-            ->add( 'save',       SubmitType::class, array( 'label' => $save_label ))
-            ->getForm();
+    public function deleteAction( Request $request ){
+        if($request->getMethod( "POST" )){
+            $id = $request->get( "idCat" );
+            $category = $this->categoryService->get( $id );
+            $this->categoryService->remove( $category );
+        }
+        
+        return $this->redirectToRoute( 'admin_home' );
     }
     
     /**
-     * Finds the question with the given id or creates a new one.
-     * @param type $_id Question ID : use 0 to create a new one
-     * @return Question
+     * Finds the category with the given id or creates a new one.
+     * @param type $_id Category ID : use 0 to create a new one
+     * @return Category
      * @throws type NotFoundException
      */
-    public function getQuestion($_id){
+    public function getCategory($_id){
         if($_id != 0){
-            $question = $this->questionService->get( $_id );
+            $category = $this->categoryService->get( $_id );
         }
         // Creating a new one
         else{
-            $question = new Question();
+            $category = new Category();
         }
-        return $question;
+        return $category;
     }
 }

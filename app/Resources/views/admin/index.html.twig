@@ -1,96 +1,133 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Etablissements à valider</h1>
-    <table class="table" style="width: 40%;">
-        <thead>
-            <tr>
-                <th>ID</th>
-                <th>Nom</th>
-                <th>Owner</th>
-                <th>&nbsp;</th>
-            </tr>
-        </thead>
-        <tbody>
-        {% for e in establishments %}
-            <tr>
-                <td> {{ e.id }} </td>
-                <td><a href="{{ path("etb_detail", { '_id' : e.id }) }}"> {{ e.name }} </a></td>
-                <td> {{ e.userOwner.username }} </td>
-                <td> 
-                    {% if is_granted('edit', e) %}
-                    <form action="{{ path("etb_manage_delete") }}">
-                        <input type="hidden" name="idEtb" value="{{ e.id }}" />
-                        <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-primary" />
-                    </form>
-                    <form action="{{ path("etb_admin_validate") }}">
-                        <input type="hidden" name="idEtb" value="{{ e.id }}" />
-                        <input type="submit" value="{{ 'form.label.validate'|trans }}" class="btn btn-primary" />
-                    </form>
-                    {% endif %}
-                </td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-    <div class="col-md-6 col-xs-12">
-        <h1>Engagements</h1>
-        <table class="table" style="width: 20%;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Description</th>
-                    <th>Icône</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for c in commitments %}
-                <tr>
-                    <td> {{ c.id }} </td>
-                    <td><a href="{{ path("cmt_admin_update", { '_id' : c.id }) }}"> {{ c.description }} </a></td>
-                    <td> {{ c.icon }} </td>
-                    <td> 
-                        <form action="{{ path("cmt_admin_delete") }}">
-                            <input type="hidden" name="idEtb" value="{{ c.id }}" />
-                            <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-primary" />
-                        </form>
-                    </td>
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-                <a href="{{ path("cmt_admin_create") }}"> New </a>
-            </tfoot>
-        </table>
+    <div class="row">
+        <h1>Etablissements à valider</h1>
+        {% if establishments is empty %}
+            <p>{{ 'admin.nothing_to_do'|trans }}.</p>
+        {% else %}
+            <table class="table" style="width: 40%;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nom</th>
+                        <th>Owner</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for e in establishments %}
+                    <tr>
+                        <td> {{ e.id }} </td>
+                        <td><a href="{{ path("etb_detail", { '_id' : e.id }) }}"> {{ e.name }} </a></td>
+                        <td> {{ e.userOwner.username }} </td>
+                        <td> 
+                            {% if is_granted('edit', e) %}
+                            <form action="{{ path("etb_manage_delete") }}">
+                                <input type="hidden" name="idEtb" value="{{ e.id }}" />
+                                <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-danger" />
+                            </form>
+                            <form action="{{ path("etb_admin_validate") }}">
+                                <input type="hidden" name="idEtb" value="{{ e.id }}" />
+                                <input type="submit" value="{{ 'form.label.validate'|trans }}" class="btn btn-primary" />
+                            </form>
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+        {% endif %}
     </div>
-    <div class="col-md-6 col-xs-12">
-        <h1>Activités</h1>
-        <table class="table" style="width: 20%;">
-            <thead>
-                <tr>
-                    <th>ID</th>
-                    <th>Name</th>
-                    <th>&nbsp;</th>
-                </tr>
-            </thead>
-            <tbody>
-            {% for act in activities %}
-                <tr>
-                    <td> {{ act.id }} </td>
-                    <td><a href="{{ path("act_admin_update", { '_id' : act.id }) }}"> {{ act.name }} </a></td>
-                    <td> 
-                        <form action="{{ path("act_admin_delete") }}">
-                            <input type="hidden" name="idEtb" value="{{ act.id }}" />
-                            <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-primary" />
-                        </form>
-                    </td
-                </tr>
-            {% endfor %}
-            </tbody>
-            <tfoot>
-                <a href="{{ path("act_admin_create") }}"> New </a>
-            </tfoot>
-        </table>
+    <div class="row">
+        <div class="col-md-4 col-xs-12">
+            <h1>Engagements</h1>
+            <table class="table" style="width: 20%;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Description</th>
+                        <th>Icône</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for c in commitments %}
+                    <tr>
+                        <td> {{ c.id }} </td>
+                        <td><a href="{{ path("cmt_admin_update", { '_id' : c.id }) }}"> {{ c.description }} </a></td>
+                        <td> {{ c.icon }} </td>
+                        <td> 
+                            <form action="{{ path("cmt_admin_delete") }}">
+                                <input type="hidden" name="idEtb" value="{{ c.id }}" />
+                                <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-danger" />
+                            </form>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <a href="{{ path("cmt_admin_create") }}"> New </a>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <h1>Activités</h1>
+            <table class="table" style="width: 20%;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for act in activities %}
+                    <tr>
+                        <td> {{ act.id }} </td>
+                        <td><a href="{{ path("act_admin_update", { '_id' : act.id }) }}"> {{ act.name }} </a></td>
+                        <td> 
+                            <form action="{{ path("act_admin_delete") }}">
+                                <input type="hidden" name="idEtb" value="{{ act.id }}" />
+                                <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-danger" />
+                            </form>
+                        </td
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <a href="{{ path("act_admin_create") }}"> New </a>
+                </tfoot>
+            </table>
+        </div>
+        <div class="col-md-4 col-xs-12">
+            <h1>Catégories</h1>
+            <table class="table" style="width: 20%;">
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Name</th>
+                        <th>&nbsp;</th>
+                    </tr>
+                </thead>
+                <tbody>
+                {% for cat in categories %}
+                    <tr>
+                        <td> {{ cat.id }} </td>
+                        <td><a href="{{ path("cat_admin_update", { '_id' : cat.id }) }}"> {{ cat.name }} </a></td>
+                        <td> 
+                            <form action="{{ path("act_admin_delete") }}">
+                                <input type="hidden" name="idCat" value="{{ cat.id }}" />
+                                <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-danger" />
+                            </form>
+                        </td
+                    </tr>
+                {% endfor %}
+                </tbody>
+                <tfoot>
+                    <a href="{{ path("act_admin_create") }}"> New </a>
+                </tfoot>
+            </table>
+        </div>
     </div>
 {% endblock %}

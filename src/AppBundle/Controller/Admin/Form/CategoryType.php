@@ -6,7 +6,9 @@ use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\IntegerType;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use Symfony\Component\Form\Extension\Core\Type\SubmitType;
+
 /**
  * Description of CategoryType
  *
@@ -15,15 +17,26 @@ use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 class CategoryType extends AbstractType {
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add( 'level', IntegerType::class );
-        $builder->add( 'type',  IntegerType::class );
-        $builder->add( 'question',  TextType::class );
+        $builder->add( 'name',          TextType::class, array(
+                                        'label' => 'form.label.name'
+        ));
+        $builder->add( 'description',   TextType::class, array(
+                                        'label' => 'form.label.desc'
+        ));
+        $builder->add( 'parent',        EntityType::class, array(
+                                        'label' => 'category.parent',
+                                        'class' => 'AppBundle:Category',
+                                        'choice_label' => 'name',
+                                        'mapped' => false
+        ));
+        $builder->add( 'save',          SubmitType::class, array( 
+                                        'label' => 'form.label.save' ));
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\CommitmentQuestion',
+            'data_class' => 'AppBundle\Entity\Category',
         ));
     }
 }

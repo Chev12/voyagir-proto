@@ -64,7 +64,7 @@ class CommitmentController extends ControllerSpecial {
     }
     
     /**
-     * @Route("delete/cmt", name="cmt_admin_delete")
+     * @Route("admin/delete/cmt", name="cmt_admin_delete")
      */
     public function deleteAction( Request $request ){
         if($request->getMethod( "POST" )){
