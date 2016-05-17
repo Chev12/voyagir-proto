@@ -42,6 +42,7 @@
     <div class="row">
         <div class="col-md-4 col-xs-12">
             <h1>Engagements</h1>
+            <a href="{{ path("cmt_admin_create") }}"> New </a>
             <table class="table" style="width: 20%;">
                 <thead>
                     <tr>
@@ -66,13 +67,11 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-                <tfoot>
-                    <a href="{{ path("cmt_admin_create") }}"> New </a>
-                </tfoot>
             </table>
         </div>
         <div class="col-md-4 col-xs-12">
             <h1>Activités</h1>
+            <a href="{{ path("act_admin_create") }}"> New </a>
             <table class="table" style="width: 20%;">
                 <thead>
                     <tr>
@@ -88,20 +87,18 @@
                         <td><a href="{{ path("act_admin_update", { '_id' : act.id }) }}"> {{ act.name }} </a></td>
                         <td> 
                             <form action="{{ path("act_admin_delete") }}">
-                                <input type="hidden" name="idEtb" value="{{ act.id }}" />
+                                <input type="hidden" name="idAct" value="{{ act.id }}" />
                                 <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-danger" />
                             </form>
                         </td
                     </tr>
                 {% endfor %}
                 </tbody>
-                <tfoot>
-                    <a href="{{ path("act_admin_create") }}"> New </a>
-                </tfoot>
             </table>
         </div>
         <div class="col-md-4 col-xs-12">
             <h1>Catégories</h1>
+            <a href="{{ path("cat_admin_create") }}"> New </a>
             <table class="table" style="width: 20%;">
                 <thead>
                     <tr>
@@ -116,7 +113,7 @@
                         <td> {{ cat.id }} </td>
                         <td><a href="{{ path("cat_admin_update", { '_id' : cat.id }) }}"> {{ cat.name }} </a></td>
                         <td> 
-                            <form action="{{ path("act_admin_delete") }}">
+                            <form action="{{ path("cat_admin_delete") }}">
                                 <input type="hidden" name="idCat" value="{{ cat.id }}" />
                                 <input type="submit" value="{{ 'form.label.delete'|trans }}" class="btn btn-danger" />
                             </form>
@@ -124,9 +121,6 @@
                     </tr>
                 {% endfor %}
                 </tbody>
-                <tfoot>
-                    <a href="{{ path("act_admin_create") }}"> New </a>
-                </tfoot>
             </table>
         </div>
     </div>

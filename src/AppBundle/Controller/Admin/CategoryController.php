@@ -41,7 +41,7 @@ class CategoryController extends ControllerSpecial {
 
         // Saving
         if ( $form->isValid() ) {
-            $category = $this->categoryService->saveWithParent( $category, $form->getData()->getParent() );
+            $category = $this->categoryService->saveWithParent( $category, $form->get('parent')->getData() );
             return $this->forward('AppBundle:Admin\Admin:index');
         }
         
@@ -72,8 +72,8 @@ class CategoryController extends ControllerSpecial {
      * @return Category
      * @throws type NotFoundException
      */
-    public function getCategory($_id){
-        if($_id != 0){
+    public function getCategory ( $_id ) {
+        if ( $_id != 0 ) {
             $category = $this->categoryService->get( $_id );
         }
         // Creating a new one

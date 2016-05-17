@@ -35,29 +35,79 @@ class CategoryService extends BusinessService {
      * @param boolean $doFlush
      */
     public function saveWithParent ( $category, $parent, $doFlush = true) {
-
         $limitSupParent = $parent->getLimitSup();
         
-        $category->setLimitInf( $limitSupParent );
-        $category->setLimitSup( $limitSupParent + 1 );
-        $category->setLevel( $parent->getLevel() + 1 );
+        $rootParent = $parent;
+        if ( $parent->getLevel() > 1 ) {
+            $rootParent = $this->getRootParent ( $parent );
+        }
+        $category->setLimitInf ( $limitSupParent );
+        $category->setLimitSup ( $limitSupParent + 1 );
+        $category->setLevel ( $parent->getLevel() + 1 );
         
-        $parent->setLimitSup($limitSupParent + 2);
-        
-        // MAJ catégorie suivante
-        /*update category set
-        limit_inf = limit_inf + 2,
-                limit_sup = limit_sup + 2
-                where limit_inf > limitSupParent;*/
-        
-        // MAJ catégories parentes
-        /*update category set
-            limit_sup = limit_sup + 2
-        where limit_sup >= limitSupParent
-                and limit_inf < limitSup*/
-        
-        parent::save($category, false);
-        parent::save($parent, $doFlush);
-        return $category;
+        $this->updateToTheRight ( $rootParent->getLimitSup() );
+        $this->updateParents ( $parent );
+        return parent::save ( $category, $doFlush );
+    }
+    
+    /**
+     * 
+     * @param Category $category
+     * @param boolean $doFlush
+     */
+    public function remove ( $category, $doFlush = true ) {
+        $rootParent = $this->getRootParent ( $category );
+        $this->updateToTheRight ( $rootParent->getLimitSup(), '-' );
+        $this->updateParents ( $category, '-' );
+        parent::remove ( $category, $doFlush );
+    }
+    
+    /**
+     * Get the first (level = 1) parent of given category
+     * @param Category $category
+     * @return Category
+     */
+    public function getRootParent ( $category ) {
+        $qb = $this->getQueryBuilder();
+        $qb->select('c')
+           ->from('AppBundle:Category', 'c')
+           ->where($qb->expr()->andX(
+                $qb->expr()->eq('c.level', 1),
+                $qb->expr()->lte('c.limitInf', ':limit_inf'),
+                $qb->expr()->gte('c.limitSup', ':limit_sup')
+           ))
+           ->setParameter('limit_inf', $category->getLimitInf())    
+           ->setParameter('limit_sup', $category->getLimitSup());
+        return $qb->getQuery()->getResult();
+    }
+    
+    /**
+     * Move all categories on the right of given limit further
+     * @param int $limit_sup
+     */
+    private function updateToTheRight ( $limit_sup, $f = '+' ) {
+        $qb = $this->getQueryBuilder();
+        $qb->update('AppBundle:Category', 'c')
+           ->set('c.limitInf', 'c.limitInf '.$f.' 2')
+           ->set('c.limitSup', 'c.limitSup '.$f.' 2')
+           ->where('c.limitInf > :limit')
+           ->setParameter('limit', $limit_sup);
+        $qb->getQuery()->execute();
+    }
+    
+    /**
+     * Update all parent categories
+     * @param Category $category
+     */
+    private function updateParents ( $category, $f = '+' ) {
+        $qb = $this->getQueryBuilder();
+        $qb->update('AppBundle:Category', 'c')
+           ->set('c.limitSup', 'c.limitSup '.$f.' 2')
+           ->where($qb->expr()->andX(
+                $qb->expr()->lte('c.limitInf', ':limit_inf'),
+                $qb->expr()->gte('c.limitSup', ':limit_sup')))
+           ->setParameter('limit_inf', $category->getLimitInf())
+           ->setParameter('limit_sup', $category->getLimitSup());
+        $qb->getQuery()->execute();
     }
 }

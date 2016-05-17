@@ -15,9 +15,9 @@ class Category
     /**
      * @var integer
      *
-     * @ORM\Id
      * @ORM\Column(name="id", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="AUTO")
+     * @ORM\Id
+     * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     private $id;
     
@@ -25,7 +25,6 @@ class Category
      * @var integer
      *
      * @ORM\Column(name="limit_inf", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $limitInf;
 
@@ -33,7 +32,6 @@ class Category
      * @var integer
      *
      * @ORM\Column(name="limit_sup", type="integer", nullable=false)
-     * @ORM\GeneratedValue(strategy="NONE")
      */
     private $limitSup;
 

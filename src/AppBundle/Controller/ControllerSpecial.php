@@ -30,7 +30,6 @@ abstract class ControllerSpecial extends Controller {
                     ->build( $name );
     }
 
-
     /**
      * Initialize stuff after the setContainer
      */

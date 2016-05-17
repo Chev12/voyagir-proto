@@ -29,11 +29,17 @@
         <div class="col-md-6 col-xs-12">
             <h1> {{ 'establishment.manage.picture'|trans}} </h1>
             {{ form_row(form.imageFile) }}
-            <div class="row">
+            {% if establishment.id != null %}
                 <span class="col-sm-2"></span><em class="col-sm-10">{{ 'establishment.manage.offset_help'|trans}}</em>
-            </div>
-            {{ form_row(form.imageOffset) }}
-            {{ form_row(form.imageName) }}
+                {{ form_row(form.imageOffset) }}
+                {{ form_row(form.imageName) }}
+                <label class="col-sm-2">
+                    {{ 'establishment.manage.thumbnail'|trans}} </h2>
+                </label>
+                <span class="col-sm-10">
+                    <img class="img-thumbnail" width="304" height="236" src="{{ asset('img/etb/' ~ establishment.imageName) }}" />
+                </span>
+            {% endif %}
         </div>
     </div>
     <div clas="row">
@@ -52,18 +58,6 @@
             {{ form_row(form.contactTwt) }}
             {{ form_row(form.contactWebsite) }}
             {{ form_row(form.contactPhone) }}
-        </div>
-    </div>
-    <div clas="row">
-        <div class="col-md-6 col-xs-12">
-        </div>
-        <div class="col-md-6 col-xs-12">
-            <label class="col-sm-2">
-                {{ 'establishment.manage.thumbnail'|trans}} </h2>
-            </label>
-            <span class="col-sm-10">
-                <img class="img-thumbnail" width="304" height="236" src="{{ asset('img/etb/' ~ establishment.imageName) }}" />
-            </span>
         </div>
     </div>
     {{ form_end(form) }}

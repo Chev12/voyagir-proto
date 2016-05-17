@@ -116,7 +116,7 @@ class EstablishmentService extends BusinessService {
     }
         
     /**
-     * Return the non validated establishment.
+     * Return the non validated establishments.
      * @return array Array of establishments
      */
     public function findNotValidated ()
