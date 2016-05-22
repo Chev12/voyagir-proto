@@ -64,7 +64,6 @@ class EstablishmentType extends AbstractType {
                                             'label' => 'form.label.coord' ))
             ->add( 'imageFile',         FileType::class, array(
                                             'required' => false,
-                                            'required' => true,
                                             'label' => 'form.label.pic' ))
             ->add( 'imageOffset',       IntegerType::class, array(
                                             'required' => false,
@@ -88,6 +87,14 @@ class EstablishmentType extends AbstractType {
                                             'required' => false,
                                             'label' => 'form.label.cur_pic', 
                                             'disabled' => true ))
+            ->add( 'labels',            EntityType::class, array(
+                                            'required' => false,
+                                            'multiple' => true,
+                                            'expanded' => 'true',
+                                            'class' => 'AppBundle:Label',
+                                            'choice_label' => 'name',
+                                            'label' => 'establishment.manage.labels'
+                                        ))
             ->add( 'save',              SubmitType::class, array( 
                                             'label' => 'form.label.save' ));
     }

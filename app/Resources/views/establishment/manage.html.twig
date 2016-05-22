@@ -60,6 +60,13 @@
             {{ form_row(form.contactPhone) }}
         </div>
     </div>
+    <div class="row">
+        <div class="col-md-12 col-xs-12">
+            <h1> {{ 'establishment.manage.labels'|trans}} </h1>
+            {{ form_row(form.labels) }}
+        </div>
+    </div>
+    {{ form_row(form.save) }}
     {{ form_end(form) }}
     {% if establishment.id != null %}
     <div>

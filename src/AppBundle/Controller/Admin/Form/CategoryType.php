@@ -21,7 +21,8 @@ class CategoryType extends AbstractType {
                                         'label' => 'form.label.name'
         ));
         $builder->add( 'description',   TextType::class, array(
-                                        'label' => 'form.label.desc'
+                                        'label' => 'form.label.desc',
+                                        'required' => false
         ));
         $builder->add( 'parent',        EntityType::class, array(
                                         'label' => 'category.parent',

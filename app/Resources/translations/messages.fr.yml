@@ -38,6 +38,7 @@ establishment:
         thumbnail: Aperçu
         edit_act: Editer
         del_act: Supprimer
+        labels: Labels
 
 activity:
     level: Ordre
@@ -50,6 +51,7 @@ form:
         country: Choisissez un pays...
         category: Catégorie...
     label:
+        id: ID
         name: Nom
         desc: Description
         useful_info: Info pratiques
@@ -72,6 +74,7 @@ form:
         contact_fb: Page Facebook
         contact_twt: Page Twitter
         contact_website: Site web
+        icon: Icône
         
 user:
     change_pwd: Modification du mot de passe

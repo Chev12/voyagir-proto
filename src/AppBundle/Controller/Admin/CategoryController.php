@@ -46,7 +46,7 @@ class CategoryController extends ControllerSpecial {
         }
         
         // Show form
-        return $this->render( 'admin/basicAdmin.html.twig', array(
+        return $this->render( 'admin/category.html.twig', array(
             'object_name' => 'Controller',
             'form' => $form->createView(),
             'category' => $category
@@ -74,7 +74,7 @@ class CategoryController extends ControllerSpecial {
      */
     public function getCategory ( $_id ) {
         if ( $_id != 0 ) {
-            $category = $this->categoryService->get( $_id );
+            $category = $this->categoryService->getWithParents( $_id );
         }
         // Creating a new one
         else{

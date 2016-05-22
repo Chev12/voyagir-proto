@@ -38,6 +38,7 @@ establishment:
         thumbnail: Thumbnail
         edit_act: Edit
         del_act: Remove
+        labels: Labels
 
 activity:
     level: Level
@@ -50,6 +51,7 @@ form:
         country: Select a country...
         category: Cateogry...
     label:
+        id: ID
         name: Name
         desc: Description
         useful_info: Useful informations
@@ -72,6 +74,7 @@ form:
         contact_fb: Facebook page
         contact_twt: Twitter page
         contact_website: Web site
+        icon: Icon
 
 user:
     change_pwd: Change password

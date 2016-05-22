@@ -29,6 +29,32 @@ class CategoryService extends BusinessService {
     }
     
     /**
+     * Get a category by its limits with its parents
+     * @param integer $id
+     * @return Object
+     * @throws NotFoundException
+     */
+    function getWithParents( $id ) {
+        
+        $category = $this->get($id);
+        
+        $qb = $this->getQueryBuilder();
+        $qb->select('c')
+           ->from('AppBundle:Category', 'c')
+           ->where($qb->expr()->andX(
+                $qb->expr()->lt('c.limitInf', ':limit_inf'),
+                $qb->expr()->gt('c.limitSup', ':limit_sup')
+           ))
+           ->orderBy('c.level', 'DESC')
+           ->setParameter('limit_inf', $category->getLimitInf())    
+           ->setParameter('limit_sup', $category->getLimitSup());
+        
+        $results = $qb->getQuery()->getResult();
+        $category->setParentCategories($results);
+        return $category;
+    }
+    
+    /**
      * Persist a category (create/update)
      * @param Category $category
      * @param Category $parent
@@ -56,8 +82,8 @@ class CategoryService extends BusinessService {
      * @param boolean $doFlush
      */
     public function remove ( $category, $doFlush = true ) {
-        $rootParent = $this->getRootParent ( $category );
-        $this->updateToTheRight ( $rootParent->getLimitSup(), '-' );
+        //$rootParent = $this->getRootParent ( $category );
+        $this->updateToTheRight ( $category->getLimitSup(), '-' );
         $this->updateParents ( $category, '-' );
         parent::remove ( $category, $doFlush );
     }
@@ -78,7 +104,7 @@ class CategoryService extends BusinessService {
            ))
            ->setParameter('limit_inf', $category->getLimitInf())    
            ->setParameter('limit_sup', $category->getLimitSup());
-        return $qb->getQuery()->getResult();
+        return $qb->getQuery()->getSingleResult();
     }
     
     /**

@@ -36,7 +36,7 @@ class CommitmentController extends ControllerSpecial {
         $commitment = $this->getCommitment ( $_id );
         
         // Creating form
-        $form = $this->buildForm ( $commitment );
+        $form = $this->createForm(CommitmentType::class, $commitment);
         $form->handleRequest ( $request );
 
         // Saving
@@ -46,21 +46,10 @@ class CommitmentController extends ControllerSpecial {
         }
         
         // Show form
-        return $this->render( 'admin/commitment/manage.html.twig', array(
+        return $this->render( 'admin/commitment.html.twig', array(
             'form' => $form->createView(),
             'commitment' => $commitment
         ));
-    }
-    
-    /**
-     * Create the commitment form
-     * @param Commitment $commitment
-     * @return Form
-     */
-    function buildForm ( $commitment )
-    {
-        $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
-        return $this->createForm(CommitmentType::class, $commitment);
     }
     
     /**

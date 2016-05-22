@@ -4,9 +4,7 @@ namespace AppBundle\Controller\Admin;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\Form\Extension\Core\Type\TextType;
-use Symfony\Component\Form\Extension\Core\Type\SubmitType;
-use Symfony\Bridge\Doctrine\Form\Type\EntityType;
+use AppBundle\Controller\Admin\Form\ActivityTypeType;
 use AppBundle\Controller\ControllerSpecial;
 use AppBundle\Entity\ActivityType;
 
@@ -38,7 +36,7 @@ class ActivityController extends ControllerSpecial {
         $activity = $this->getActivity ( $_id );
         
         // Creating form
-        $form = $this->buildForm ( $activity );
+        $form = $this->createForm ( ActivityTypeType::class, $activity );
         $form->handleRequest ( $request );
 
         // Saving
@@ -48,36 +46,11 @@ class ActivityController extends ControllerSpecial {
         }
         
         // Show form
-        return $this->render( 'admin/activity/manage.html.twig', array(
+        return $this->render( 'admin/activity.html.twig', array(
             'object_name' => 'Activity',
             'form' => $form->createView(),
             'activity' => $activity
         ));
-    }
-    
-    /**
-     * Create the activity form
-     * @param Activity $activity
-     * @return Form
-     */
-    function buildForm ( $activity )
-    {
-        $save_label = $this->get( 'translator' )->trans( "establishment.manage.save" );
-        return $this->createFormBuilder($activity)
-            ->add( 'name',  TextType::class )
-            ->add( 'commitments', EntityType::class,
-                                    array(
-                                        'required' => false,
-                                        'multiple' => true,
-                                        'expanded' => 'true',
-                                        'class' => 'AppBundle:Commitment',
-                                        'choice_label' => 'description',
-                                        'label' => 'Lier un ou plusieurs engagements',
-                                        'group_by' => function($val, $key, $index) {
-                                            return substr($val->getDescription(), 0, 1)   ;   
-                                        }))
-            ->add( 'save',  SubmitType::class, array( 'label' => $save_label ))
-            ->getForm();
     }
     
     /**

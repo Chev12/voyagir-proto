@@ -70,6 +70,12 @@ class Category
      * )
      */
     private $commitments;
+    
+    /**
+     * Parent categories.
+     * @var \Doctrine\Common\Collections\Collection
+     */
+    private $parentCategories;
 
     /**
      * Constructor
@@ -79,6 +85,25 @@ class Category
         $this->commitment = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
+    /**
+     * Set parent categories
+     *
+     * @param \Doctrine\Common\Collections\Collection $parentCategories
+     */
+    public function setParentCategories( $parentCategories )
+    {
+        $this->parentCategories = $parentCategories;
+    }
+
+    /**
+     * Get parent categories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getParentCategories()
+    {
+        return $this->parentCategories;
+    }
 
     /**
      * Get id

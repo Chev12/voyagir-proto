@@ -145,20 +145,6 @@ class Establishment
      * })
      */
     private $userOwner;
-
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\ManyToMany(targetEntity="Label", mappedBy="establishment")
-     */
-    private $labels;
-    
-    /**
-     * @var \Doctrine\Common\Collections\Collection
-     *
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EstablishmentActivity", mappedBy="establishment", cascade={"remove"})
-     */
-    private $activities;
     
     /**
      * @var integer
@@ -194,6 +180,20 @@ class Establishment
      * @var string
      */
     private $imageName;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\ManyToMany(targetEntity="Label", mappedBy="establishment")
+     */
+    private $labels;
+    
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\EstablishmentActivity", mappedBy="establishment", cascade={"remove"})
+     */
+    private $activities;
 
     /**
      * @ORM\Column(name="image_offset", type="integer", length=4)

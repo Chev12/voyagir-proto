@@ -1,0 +1,29 @@
+{% extends "base.html.twig" %}
+{% block body %}
+    <div style="width: 60%">
+        <a href="{{ path("admin_home") }}">Accueil admin</a>
+        <h1> Informations générales </h1>
+        {{ form_start(form) }}
+        {{ form_widget(form) }}
+        {{ form_end(form) }}
+        <h1>Parents</h1>
+        <table class="table">
+            <thead>
+                <tr>
+                    <th>{{ 'form.label.level'|trans }}</th>
+                    <th>{{ 'form.label.name'|trans }}</th>
+                    <th>{{ 'form.label.desc'|trans }}</th>
+                </tr>
+            </thead>
+            <tbody>
+            {% for parent in category.parentCategories %}
+                    <tr>
+                        <td> {{ parent.level }} </td>
+                        <td><a href="{{ path("etb_detail", { '_id' : parent.id }) }}"> {{ parent.name }} </a></td>
+                        <td> {{ parent.description }} </td>
+                    </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
