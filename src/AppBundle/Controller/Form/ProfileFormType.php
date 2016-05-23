@@ -25,7 +25,7 @@ class ProfileFormType extends AbstractType
      * @param FormBuilderInterface $builder
      * @param array                $options
      */
-    protected function buildForm(FormBuilderInterface $builder, array $options)
+    public function buildForm(FormBuilderInterface $builder, array $options)
     {
         $builder
             ->add('username', null, array('label' => 'form.username', 'translation_domain' => 'FOSUserBundle'))

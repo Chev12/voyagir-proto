@@ -11,6 +11,7 @@
         
         <!-- Importations -->
         <script type="text/javascript" src="http://code.jquery.com/jquery-2.1.4.min.js" ></script>
+        <script type="text/javascript" src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
         <script type="text/javascript" src="{{ asset('js/main.js') }}" ></script>
         <link href="{{ asset('css/bootstrap.min.css') }}"
               rel="stylesheet" type="text/css" />
@@ -30,7 +31,18 @@
         <div id="page">
             <a href="javascript:;" class="menu-btn"></a>
             {% block body %}{% endblock %}
-        </div>  
+        </div>
+        
+        {% include("login_popup.html.twig") %}
+        
+        {% javascripts %}
+            <script>
+                $(document).ready(function() {
+                // This command is used to initialize some elements and make them work properly
+                $.material.init();
+                });
+            </script>
+        {% endjavascripts %}
         {% block javascripts %}{% endblock %}
     </body>
 </html>

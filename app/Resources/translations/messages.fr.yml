@@ -1,5 +1,7 @@
 admin:
     nothing_to_do: Rien à signaler
+    activity:
+        add_commitments: Lier des engagements
 
 banner:
     project: Projet
@@ -12,6 +14,7 @@ banner:
 home:
     title: Accueil
     etb_list: Nouveaux établissements
+    connection: Connexion
 
 establishment:
     id: Numéro

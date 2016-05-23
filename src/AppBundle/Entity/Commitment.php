@@ -144,7 +144,6 @@ class Commitment
     public function addActivity(ActivityType $activity)
     {
         $this->activities[] = $activity;
-        $activity->setCommitment($this);
         return $this;
     }
 

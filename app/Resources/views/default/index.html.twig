@@ -39,7 +39,11 @@
                     <h2><a class="thumbnail-title" href="{{ path("etb_detail", { '_id' : e.id }) }}">
                             {{ e.name }}, {{ e.adressCountry.nameFrFr }}
                     </a></h2>
-                    <p>{{ e.description }}</p>
+                    <p>
+                        {% for label in e.labels %}
+                        <spans class="etb_tag">#{{ label.name }}</spans>
+                        {% endfor %}
+                    </p>
                 </div>
             </div>
         </div>

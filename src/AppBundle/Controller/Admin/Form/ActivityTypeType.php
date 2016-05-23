@@ -25,7 +25,7 @@ class ActivityTypeType extends AbstractType {
                                         'expanded' => 'true',
                                         'class' => 'AppBundle:Commitment',
                                         'choice_label' => 'description',
-                                        'label' => 'Lier un ou plusieurs engagements'
+                                        'label' => 'admin.activity.add_commitments'
                                     ))
             ->add( 'save',  SubmitType::class, array( 'label' => 'form.label.save' ));
     }

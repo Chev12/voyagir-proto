@@ -4,7 +4,6 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Vich\UploaderBundle\Mapping\Annotation as Vich;
-use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\File;
 
 /**
@@ -194,7 +193,15 @@ class Establishment
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Label", mappedBy="establishment")
+     * @ORM\ManyToMany(targetEntity="Label", inversedBy="establishments")
+     * @ORM\JoinTable(name="establishment_label",
+     *   joinColumns={
+     *     @ORM\JoinColumn(name="establishment", referencedColumnName="id")
+     *   },
+     *   inverseJoinColumns={
+     *     @ORM\JoinColumn(name="label", referencedColumnName="id")
+     *   }
+     * )
      */
     private $labels;
     
@@ -434,7 +441,7 @@ class Establishment
      */
     public function addLabel(\AppBundle\Entity\Label $label)
     {
-        $this->label[] = $label;
+        $this->labels[] = $label;
 
         return $this;
     }
@@ -446,7 +453,7 @@ class Establishment
      */
     public function removeLabel(\AppBundle\Entity\Label $label)
     {
-        $this->label->removeElement($label);
+        $this->labels->removeElement($label);
     }
 
     /**

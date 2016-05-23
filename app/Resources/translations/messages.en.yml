@@ -1,5 +1,7 @@
 admin:
     nothing_to_do: Nothing to do
+    activity:
+        add_commitments: Link with commitments
     
 banner:
     project: Project
@@ -12,6 +14,7 @@ banner:
 home:
     title: Homepage
     etb_list: Newly validated establishments
+    connection: Connection
 
 establishment:
     id: Number

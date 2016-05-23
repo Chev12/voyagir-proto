@@ -42,8 +42,4 @@ $(document).ready(function()
         }
     });
     
-    // <h1> 
-    /*$('h1').each(function() {
-        $(this).prepend("<i class=\"fa fa-envira\" aria-hidden=\"true\"></i>&nbsp;");
-    });*/
 });

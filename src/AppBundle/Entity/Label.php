@@ -31,24 +31,16 @@ class Label
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
-     * @ORM\ManyToMany(targetEntity="Establishment", inversedBy="labels")
-     * @ORM\JoinTable(name="establishment_label",
-     *   joinColumns={
-     *     @ORM\JoinColumn(name="label", referencedColumnName="id")
-     *   },
-     *   inverseJoinColumns={
-     *     @ORM\JoinColumn(name="establishment", referencedColumnName="id")
-     *   }
-     * )
+     * @ORM\ManyToMany(targetEntity="Establishment", mappedBy="labels")
      */
-    private $establishment;
+    private $establishments;
 
     /**
      * Constructor
      */
     public function __construct()
     {
-        $this->establishment = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->establishments = new \Doctrine\Common\Collections\ArrayCollection();
     }
 
 
@@ -95,8 +87,7 @@ class Label
      */
     public function addEstablishment(\AppBundle\Entity\Establishment $establishment)
     {
-        $this->establishment[] = $establishment;
-
+        $this->establishments[] = $establishment;
         return $this;
     }
 
@@ -107,7 +98,7 @@ class Label
      */
     public function removeEstablishment(\AppBundle\Entity\Establishment $establishment)
     {
-        $this->establishment->removeElement($establishment);
+        $this->establishments->removeElement($establishment);
     }
 
     /**
@@ -115,8 +106,8 @@ class Label
      *
      * @return \Doctrine\Common\Collections\Collection
      */
-    public function getEstablishment()
+    public function getEstablishments()
     {
-        return $this->establishment;
+        return $this->establishments;
     }
 }

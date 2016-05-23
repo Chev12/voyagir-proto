@@ -41,6 +41,8 @@ twig:
     form:
         resources: ['bootstrap_3_horizontal_layout.html.twig']
         # resources: ['bootstrap_3_horizontal_layout.html.twig']
+    globals:
+        fos_csrf_provider: "@form.csrf_provider"
 
 # Assetic Configuration
 assetic:

@@ -16,10 +16,13 @@ CREATE TABLE `activity_commitment` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 INSERT INTO `activity_commitment` (`activity_type`, `commitment`) VALUES
+(3,	1),
 (6,	1),
 (1,	2),
+(3,	2),
 (6,	2),
-(1,	3);
+(1,	3),
+(2,	3);
 
 DROP TABLE IF EXISTS `activity_type`;
 CREATE TABLE `activity_type` (
@@ -42,6 +45,7 @@ CREATE TABLE `base_user` (
   `username_canonical` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `email_canonical` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
+  `is_owner` tinyint(1) unsigned DEFAULT '0',
   `enabled` tinyint(1) NOT NULL,
   `salt` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
   `password` varchar(255) COLLATE utf8_unicode_ci NOT NULL,
@@ -59,10 +63,11 @@ CREATE TABLE `base_user` (
   UNIQUE KEY `UNIQ_1BF018B9A0D96FBF` (`email_canonical`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
-INSERT INTO `base_user` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`) VALUES
-(1,	'mat',	'mat',	'erfmath@gmail.com',	'erfmath@gmail.com',	1,	'c4jemskjbzwc0s08woogc04kss8s84k',	'$2y$13$c4jemskjbzwc0s08woogcuQoJzRg7.lKvdrJlrCfiuoXHgyPlF1..',	'2016-05-18 22:29:47',	0,	0,	NULL,	NULL,	NULL,	'a:1:{i:0;s:10:\"ROLE_ADMIN\";}',	0,	NULL),
-(2,	'mat2',	'mat2',	'erfmath@orange.Fr',	'erfmath@orange.fr',	1,	'htbapp711b4ks8skgsskkwskwsc4408',	'$2y$13$htbapp711b4ks8skgsskkuMUMH5RsSin1qnQg6itlgwRUAW7CLCEa',	'2015-11-19 20:17:25',	0,	0,	NULL,	NULL,	NULL,	'a:0:{}',	0,	NULL),
-(3,	'test',	'test',	'test@gmail.com',	'test@gmail.com',	1,	'no6z49fdmio44ggg8cs40g4g8wkw0c8',	'$2y$13$no6z49fdmio44ggg8cs40ePqRk1SNifUEv4/1IfSY13ovWJJDxvKK',	'2016-05-02 22:35:05',	0,	0,	NULL,	NULL,	NULL,	'a:0:{}',	0,	NULL);
+INSERT INTO `base_user` (`id`, `username`, `username_canonical`, `email`, `email_canonical`, `is_owner`, `enabled`, `salt`, `password`, `last_login`, `locked`, `expired`, `expires_at`, `confirmation_token`, `password_requested_at`, `roles`, `credentials_expired`, `credentials_expire_at`) VALUES
+(1,	'mat',	'mat',	'erfmath@gmail.com',	'erfmath@gmail.com',	0,	1,	'c4jemskjbzwc0s08woogc04kss8s84k',	'$2y$13$c4jemskjbzwc0s08woogcuQoJzRg7.lKvdrJlrCfiuoXHgyPlF1..',	'2016-05-23 21:53:11',	0,	0,	NULL,	NULL,	NULL,	'a:1:{i:0;s:10:\"ROLE_ADMIN\";}',	0,	NULL),
+(2,	'mat2',	'mat2',	'erfmath@orange.Fr',	'erfmath@orange.fr',	0,	1,	'htbapp711b4ks8skgsskkwskwsc4408',	'$2y$13$htbapp711b4ks8skgsskkuMUMH5RsSin1qnQg6itlgwRUAW7CLCEa',	'2015-11-19 20:17:25',	0,	0,	NULL,	NULL,	NULL,	'a:0:{}',	0,	NULL),
+(3,	'test',	'test',	'test@gmail.com',	'test@gmail.com',	0,	1,	'no6z49fdmio44ggg8cs40g4g8wkw0c8',	'$2y$13$no6z49fdmio44ggg8cs40ePqRk1SNifUEv4/1IfSY13ovWJJDxvKK',	'2016-05-02 22:35:05',	0,	0,	NULL,	NULL,	NULL,	'a:0:{}',	0,	NULL),
+(4,	'Marine',	'marine',	'marine@voyagir.com',	'marine@voyagir.com',	0,	1,	'jfvo8fs9twoo8g00scw84k0k0wogsg0',	'$2y$13$jfvo8fs9twoo8g00scw84e16L0fDhqJodRwVirpG.w41v496CXeiq',	'2016-05-22 15:15:04',	0,	0,	NULL,	NULL,	NULL,	'a:0:{}',	0,	NULL);
 
 DROP TABLE IF EXISTS `category`;
 CREATE TABLE `category` (
@@ -421,8 +426,9 @@ CREATE TABLE `estabilshment_tags` (
 DROP TABLE IF EXISTS `establishment`;
 CREATE TABLE `establishment` (
   `id` int(11) unsigned NOT NULL AUTO_INCREMENT COMMENT 'ID de l''établissement',
-  `user_owner` int(11) NOT NULL COMMENT 'Propriétaire de l''établissement',
-  `category` int(11) unsigned NOT NULL DEFAULT '1' COMMENT 'Catégorie d''établissement',
+  `user_owner` int(11) DEFAULT NULL COMMENT 'Propriétaire de l''établissement',
+  `user_creator` int(11) DEFAULT NULL,
+  `category` int(11) unsigned DEFAULT '1' COMMENT 'Catégorie d''établissement',
   `name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci NOT NULL COMMENT 'Nom de l''établissement',
   `description` text CHARACTER SET utf8 COLLATE utf8_unicode_ci COMMENT 'Description de l''établissement',
   `useful_info` text CHARACTER SET utf8 COLLATE utf8_unicode_ci,
@@ -437,26 +443,29 @@ CREATE TABLE `establishment` (
   `contact_website` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `contact_phone` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
   `coord` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `validated` tinyint(1) NOT NULL DEFAULT '0',
+  `validated` tinyint(1) DEFAULT '0',
   `validated_at` date DEFAULT NULL,
   `created_at` timestamp NULL DEFAULT NULL ON UPDATE CURRENT_TIMESTAMP,
   `last_update_at` timestamp NULL DEFAULT NULL,
   `image_name` varchar(255) CHARACTER SET utf8 COLLATE utf8_unicode_ci DEFAULT NULL,
-  `image_offset` smallint(4) NOT NULL DEFAULT '0',
+  `image_offset` smallint(4) DEFAULT '0',
   PRIMARY KEY (`id`),
   KEY `id_user` (`user_owner`),
   KEY `category` (`category`),
   KEY `adress_country` (`adress_country`),
+  KEY `user_creator` (`user_creator`),
   CONSTRAINT `establishment_ibfk_1` FOREIGN KEY (`category`) REFERENCES `category` (`id`),
   CONSTRAINT `establishment_ibfk_2` FOREIGN KEY (`adress_country`) REFERENCES `country` (`id`),
+  CONSTRAINT `establishment_ibfk_3` FOREIGN KEY (`user_creator`) REFERENCES `base_user` (`id`),
   CONSTRAINT `fk_establishment_user` FOREIGN KEY (`user_owner`) REFERENCES `base_user` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1 COMMENT='Etablissement touristique';
 
-INSERT INTO `establishment` (`id`, `user_owner`, `category`, `name`, `description`, `useful_info`, `custom_commitments`, `adress`, `adress_city`, `adress_region`, `adress_country`, `contact_mail`, `contact_fb`, `contact_twt`, `contact_website`, `contact_phone`, `coord`, `validated`, `validated_at`, `created_at`, `last_update_at`, `image_name`, `image_offset`) VALUES
-(8,	1,	1,	'Chez oim',	'C\'est d\'la balle',	'On est chez nous',	'Aimer ma chérie',	'35 rue des Champions',	'Millau',	NULL,	75,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-03 11:45:59',	'2016-05-03 11:45:59',	'8_Chez oim.jpg',	200),
-(9,	3,	1,	'Etablissement de test',	'test',	NULL,	NULL,	'404 rue des Tests',	'Paris',	NULL,	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-03 11:47:38',	'2016-05-03 11:47:38',	'9_Etablissement de test.jpg',	300),
-(10,	1,	1,	'Un autre établissement',	'Celui là est pas mal aussi',	NULL,	NULL,	'333',	'Pragues',	NULL,	12,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-03 11:50:07',	'2016-05-03 11:31:41',	'_Un autre établissement.jpg',	200),
-(11,	1,	1,	'La fête du slip',	'Comme son nom l\'indique',	NULL,	NULL,	'13 rue de ma culotte',	'Ouille',	NULL,	83,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-18 21:14:44',	'2016-05-18 21:14:44',	'_La fête du slip.jpg',	300);
+INSERT INTO `establishment` (`id`, `user_owner`, `user_creator`, `category`, `name`, `description`, `useful_info`, `custom_commitments`, `adress`, `adress_city`, `adress_region`, `adress_country`, `contact_mail`, `contact_fb`, `contact_twt`, `contact_website`, `contact_phone`, `coord`, `validated`, `validated_at`, `created_at`, `last_update_at`, `image_name`, `image_offset`) VALUES
+(8,	1,	NULL,	1,	'Chez oim',	'C\'est d\'la balle',	'On est chez nous',	'Aimer ma chérie',	'35 rue des Champions',	'Millau',	NULL,	75,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-03 11:45:59',	'2016-05-03 11:45:59',	'8_Chez oim.jpg',	200),
+(9,	3,	NULL,	1,	'Etablissement de test',	'test',	NULL,	NULL,	'404 rue des Tests',	'Paris',	NULL,	1,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-03 11:47:38',	'2016-05-03 11:47:38',	'9_Etablissement de test.jpg',	300),
+(10,	1,	NULL,	1,	'Un autre établissement',	'Celui là est pas mal aussi',	NULL,	NULL,	'333',	'Pragues',	NULL,	12,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-03 11:50:07',	'2016-05-03 11:31:41',	'_Un autre établissement.jpg',	200),
+(11,	1,	NULL,	1,	'La fête du slip',	'Comme son nom l\'indique',	NULL,	NULL,	'13 rue de ma culotte',	'Ouille',	NULL,	83,	NULL,	NULL,	NULL,	NULL,	NULL,	NULL,	1,	'2016-05-03',	'2016-05-23 20:17:41',	'2016-05-23 18:17:41',	'_La fête du slip.jpg',	300),
+(12,	1,	NULL,	2,	'Bio comme un camion',	'Bio Comme Un Camion est un food truck bio et végétarien. On y déjeune bios, bon, sain et green mais en vitesse.\r\nLes filles (Delphine et Christelle) proposent des Sandwichs au bon pain chaud, des salades, des tartes, des soupes, des gâteaux, parfois des assiettes et de bonnes limonades. On mange copieusement pour moins de 10€.',	'Mardi : de 08h à 13h30, au marché des Arceaux\r\nMercredi : de 08h à 13h30, au marché d’Antigone\r\nJeudi : de 08h à 13h30, au marché de Port-Marianne\r\nVendredi : de 11h à 14h00, sur le parking Le Triade, 215 rue Samuel Morse – Millénaire 2',	'Des produits bio et végétariens, des options végétaliennes et des options sans gluten. Que demander de plus? les produits sont locaux, le pain fait maison et on trouve des options sans lactose!',	'35 place Louis et Marie Trégaro',	'Montpellier',	'Languedoc-Roussillon',	75,	NULL,	'https://www.facebook.com/Bio-comme-un-camion-374459552597736/?ref=ts',	NULL,	NULL,	'06 13 27 05 12',	NULL,	1,	'2016-05-22',	'2016-05-22 15:07:51',	'2016-05-22 13:07:51',	'_Bio comme un camion.jpg',	200);
 
 DROP TABLE IF EXISTS `establishment_activity`;
 CREATE TABLE `establishment_activity` (
@@ -482,10 +491,13 @@ CREATE TABLE `establishment_label` (
   `establishment` int(11) unsigned NOT NULL,
   PRIMARY KEY (`label`,`establishment`),
   KEY `establishment` (`establishment`),
-  CONSTRAINT `establishment_label_ibfk_5` FOREIGN KEY (`label`) REFERENCES `label` (`id`),
-  CONSTRAINT `establishment_label_ibfk_1` FOREIGN KEY (`establishment`) REFERENCES `establishment` (`id`)
+  CONSTRAINT `establishment_label_ibfk_1` FOREIGN KEY (`establishment`) REFERENCES `establishment` (`id`),
+  CONSTRAINT `establishment_label_ibfk_5` FOREIGN KEY (`label`) REFERENCES `label` (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
+INSERT INTO `establishment_label` (`label`, `establishment`) VALUES
+(2,	11),
+(3,	11);
 
 DROP TABLE IF EXISTS `label`;
 CREATE TABLE `label` (
@@ -525,4 +537,4 @@ CREATE TABLE `user_answer` (
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
 
--- 2016-05-22 12:18:26
+-- 2016-05-23 21:54:59
