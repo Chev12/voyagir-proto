@@ -58,6 +58,8 @@ class EstablishmentService extends BusinessService {
             $arrayAnd[] = $qb->expr()->eq ( 'e.adressCountry', ':country' );
             $arrayParams['country'] = $etbCriteria->getAdressCountry();
         }
+        $arrayAnd[] = $qb->expr()->eq ( 'e.validated', ':validated' );
+        $arrayParams['validated'] = true;
         $where = call_user_func_array ( array ( $qb->expr(), 'andx' ), $arrayAnd);
         $qb->select ( 'e' )
            ->from( 'AppBundle:Establishment', 'e' )

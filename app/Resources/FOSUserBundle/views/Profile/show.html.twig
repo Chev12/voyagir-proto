@@ -6,7 +6,7 @@
         {% include "FOSUserBundle:Profile:show_content.html.twig" %}
     </div>
     <div>
-        <h2>Mes établissement</h1>
+        <h2>Mes établissements</h1>
         <span><a href="{{ path("etb_manage_create") }}">Nouveau</a></span>
         <table class="table table-striped">
             <tr>
@@ -21,7 +21,7 @@
                     <td>
                         <form action="{{ path("etb_manage_delete") }}">
                             <input type="hidden" name="idEtb" value="{{ etb.id }}" />
-                            <input type="submit" value="Supprimer" class="btn btn-primary" />
+                            <input type="submit" value="Supprimer" class="btn btn-danger" />
                         </form>
                     </td>
                 </tr>

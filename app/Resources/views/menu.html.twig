@@ -1,9 +1,12 @@
 <div id="menu">
     <a href="javascript:;" class="close"></a>
     <ul>
-        <li class="active"><a href="{{ path("homepage") }}">Accueil</a></li>
+        {# pour surbrillance : class="active" #}
+        <li><a href="{{ path("homepage") }}">Accueil</a></li>
         <li><a href="{{ path("fos_user_profile_show") }}">Profil</a></li>
-        <li><a href="{{ path("admin_home") }}">Admin</a></li>
         <li><a href="{{ path("etb_search_form") }}">{{ 'establishment.search'|trans }}</a></li>
+        {% if is_granted("ROLE_ADMIN") %}
+            <li><a href="{{ path("admin_home") }}">Admin</a></li>
+        {% endif %}
     </ul>
 </div>

@@ -133,7 +133,7 @@ class EstablishmentController extends ControllerSpecial
         // Creating a new one
         else{
             $establishment = new Establishment();
-            $establishment->setUserOwner($this->getUser());
+            $establishment->setUserCreator($this->getUser());
         }
         return $establishment;
     }

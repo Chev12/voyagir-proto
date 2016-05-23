@@ -14,7 +14,8 @@
         <script type="text/javascript" src="{{ asset('js/main.js') }}" ></script>
         <link href="{{ asset('css/bootstrap.min.css') }}"
               rel="stylesheet" type="text/css" />
-        <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css">
+        <link href="https://maxcdn.bootstrapcdn.com/font-awesome/4.6.2/css/font-awesome.min.css"
+              rel="stylesheet" type="text/css">
         <link href="https://fonts.googleapis.com/css?family=Sue+Ellen+Francisco|Indie+Flower"
               rel="stylesheet" type="text/css" />
         <link href="{{ asset('css/style.css') }}" rel="stylesheet" type="text/css" />
@@ -27,7 +28,7 @@
         {% include "menu.html.twig" %}
      
         <div id="page">
-            <a href="javascript:;" class="menu_btn"></a>
+            <a href="javascript:;" class="menu-btn"></a>
             {% block body %}{% endblock %}
         </div>  
         {% block javascripts %}{% endblock %}

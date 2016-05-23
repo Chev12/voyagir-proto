@@ -1,0 +1,52 @@
+<h2>{{ 'establishment.useful_info'|trans}}</h2>
+<div class="row">
+    <div class="col-md-12">
+        <p>{{ establishment.usefulInfo }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <strong>{{ 'form.label.adress'|trans }}</strong>
+    </div>
+    <div class="col-md-6">
+        <p>{{ establishment.adress }}, {{ establishment.adressCity }}</p>
+        <p>
+            {% if establishment.adressRegion %}
+                {{ establishment.adressRegion }}, 
+            {% endif %}
+            {{ establishment.adressCountry.nameFrFr }}
+        </p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <strong>{{ 'form.label.contact_phone'|trans }}</strong>
+    </div>
+    <div class="col-md-6">
+        <p>{{ establishment.contactPhone }}</p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <strong>{{ 'form.label.contact_website'|trans }}</strong>
+    </div>
+    <div class="col-md-6">
+        <p><a href="{{ establishment.contactWebsite }}">{{ establishment.contactWebsite }}</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <strong>{{ 'form.label.contact_fb'|trans }}</strong>
+    </div>
+    <div class="col-md-6">
+        <p><a href="{{ establishment.contactFb }}"> {{ establishment.contactFb }}</a></p>
+    </div>
+</div>
+<div class="row">
+    <div class="col-md-6">
+        <strong>{{ 'form.label.contact_twt'|trans }}</strong>
+    </div>
+    <div class="col-md-6">
+        <p><a href="{{ establishment.contactTwt }}">{{ establishment.contactFb }}</a></p>
+    </div>
+</div>

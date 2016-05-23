@@ -67,7 +67,8 @@ class EstablishmentType extends AbstractType {
                                             'label' => 'form.label.pic' ))
             ->add( 'imageOffset',       IntegerType::class, array(
                                             'required' => false,
-                                            'label' => 'form.label.pic_offset' ))
+                                            'label' => 'form.label.pic_offset',
+                                            'empty_data' => 0 ))
             ->add( 'contactMail',       TextType::class, array(
                                             'required' => false,
                                             'label' => 'form.label.contact_mail' ))

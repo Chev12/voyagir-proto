@@ -21,13 +21,28 @@ class BaseUser extends User
      * @ORM\GeneratedValue(strategy="IDENTITY")
      */
     protected $id;
+    
+    /**
+     *
+     * @var integer
+     * 
+     * @ORM\Column(name="is_owner", type="integer")
+     */
+    private $isOwner;
+
+    /**
+     * @var \Doctrine\Common\Collections\Collection
+     *
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Establishment", mappedBy="userCreator")
+     */
+    private $establishments;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
      *
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Establishment", mappedBy="userOwner")
      */
-    protected $establishments;
+    private $establishmentsOwned;
     
     /**
      * Constructor
@@ -36,6 +51,30 @@ class BaseUser extends User
     {
         parent::__construct();
         $this->establishments = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->establishmentsOwned = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Set validated
+     *
+     * @param boolean $isOwner
+     *
+     * @return BaseUser
+     */
+    public function setOwner($isOwner)
+    {
+        $this->isOwner = $isOwner?1:0;
+        return $this;
+    }
+
+    /**
+     * Is this user a owner
+     *
+     * @return boolean
+     */
+    public function isOwner()
+    {
+        return $this->isOwner===1;
     }
 
     /**
@@ -70,5 +109,39 @@ class BaseUser extends User
     public function getEstablishments()
     {
         return $this->establishments;
+    }
+
+    /**
+     * Add establishment owned
+     *
+     * @param \AppBundle\Entity\Establishment $establishment
+     *
+     * @return BaseUser
+     */
+    public function addEstablishmentOwned(\AppBundle\Entity\Establishment $establishment)
+    {
+        $this->establishmentsOwned[] = $establishment;
+
+        return $this;
+    }
+
+    /**
+     * Remove establishment owned
+     *
+     * @param \AppBundle\Entity\Establishment $establishment
+     */
+    public function removeEstablishmentOwned(\AppBundle\Entity\Establishment $establishment)
+    {
+        $this->establishmentsOwned->removeElement($establishment);
+    }
+
+    /**
+     * Get establishments owned
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getEstablishmentsOwned()
+    {
+        return $this->establishmentsOwned;
     }
 }

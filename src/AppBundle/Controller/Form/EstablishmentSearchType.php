@@ -31,7 +31,7 @@ class EstablishmentSearchType extends AbstractType {
                                             'class' => 'AppBundle:Category',
                                             'choice_label' => 'name',
                                             'label' => 'form.label.category',
-                                            'placeholder' => 'Catégorie...' ))
+                                            'placeholder' => 'form.placeholder.category' ))
                 ->add( 'adressRegion',  TextType::class, array(
                                             'label' => 'form.label.region' ))
                 ->add( 'adressCity',    TextType::class, array(
@@ -40,7 +40,7 @@ class EstablishmentSearchType extends AbstractType {
                                             'class' => 'AppBundle:Country',
                                             'choice_label' => $countryChoice,
                                             'label' => 'form.label.country',
-                                            'placeholder' => 'Choisir un pays...'
+                                            'placeholder' => 'form.placeholder.country'
                                             ))
                 ->add( 'search',        SubmitType::class, array( 
                                             'label' => 'form.label.search' ));

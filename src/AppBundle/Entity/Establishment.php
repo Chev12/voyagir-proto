@@ -139,12 +139,22 @@ class Establishment
     /**
      * @var \BaseUser
      *
-     * @ORM\ManyToOne(targetEntity="BaseUser", inversedBy="establishments")
+     * @ORM\ManyToOne(targetEntity="BaseUser", inversedBy="establishmentsOwned")
      * @ORM\JoinColumns({
      *   @ORM\JoinColumn(name="user_owner", referencedColumnName="id")
      * })
      */
     private $userOwner;
+
+    /**
+     * @var \BaseUser
+     *
+     * @ORM\ManyToOne(targetEntity="BaseUser", inversedBy="establishments")
+     * @ORM\JoinColumns({
+     *   @ORM\JoinColumn(name="user_creator", referencedColumnName="id")
+     * })
+     */
+    private $userCreator;
     
     /**
      * @var integer
@@ -389,6 +399,30 @@ class Establishment
     public function getUserOwner()
     {
         return $this->userOwner;
+    }
+
+    /**
+     * Set userCreator
+     *
+     * @param \AppBundle\Entity\BaseUser $userCreator
+     *
+     * @return Establishment
+     */
+    public function setUserCreator(\AppBundle\Entity\BaseUser $userCreator = null)
+    {
+        $this->userCreator = $userCreator;
+
+        return $this;
+    }
+
+    /**
+     * Get userCreator
+     *
+     * @return \AppBundle\Entity\BaseUser
+     */
+    public function getUserCreator()
+    {
+        return $this->userCreator;
     }
 
     /**
@@ -766,7 +800,7 @@ class Establishment
     /**
      * Set validated
      *
-     * @param boolean $validated
+     * @param integer $validated
      *
      * @return Establishment
      */
@@ -780,7 +814,7 @@ class Establishment
     /**
      * Get validated
      *
-     * @return boolean
+     * @return integer
      */
     public function getValidated()
     {

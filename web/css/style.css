@@ -11,8 +11,10 @@ a {
 }
 
 h1 {
+    //color : #33ccaf;
     color : #444485;
     font-family: 'Sue Ellen Francisco', cursive;
+    text-transform: uppercase;
 }
 
 .logo {

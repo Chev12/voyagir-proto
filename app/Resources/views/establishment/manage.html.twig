@@ -67,9 +67,9 @@
         </div>
     </div>
     {{ form_row(form.save) }}
-    {{ form_end(form) }}
-    {% if establishment.id != null %}
-    <div>
+    {{ form_end(form, {'render_rest': false}) }}
+    {% if establishment.id != null and is_granted("ROLE_ADMIN") %}
+    <div class="row">
         <h1> {{ 'establishment.activities'|trans}} </h1>
         <p>
             <a href="{{ path("etb_activity_new", { '_idEtb' : establishment.id }) }}"> {{ 'establishment.manage.new_act'|trans}} </a>
@@ -107,10 +107,10 @@
         </table>
         {% endif %}
     </div>
-    {% endif %} 
-    <div>
+    <div class="row">
         <span><strong>{{ 'establishment.owner'|trans}} : </strong> {{ establishment.userOwner.id }} - {{ establishment.userOwner.username }} </span>
     </div>
+    {% endif %}
 {% endblock %}
 {% block javascripts %}
     <script src="{{ asset('js/picture_management.js') }}"></script>
