@@ -9,7 +9,7 @@
             </div>
             <div class="modal-body">
                 <div>
-                    <a class="btn btn-block btn-social btn-lg btn-facebook" onclick="FB.login();">
+                    <a id="facebook-login-button" class="btn btn-block btn-social btn-lg btn-facebook">
                         <span class="fa fa-facebook"></span> 
                         {{ 'home.facebook_login'|trans }}
                     </a>
@@ -18,7 +18,7 @@
                 {#% if error %}
                     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %#}
-                <form class="form" action="{{ path("fos_user_security_check") }}" method="post">
+                <form id="form-login" class="form" action="{{ path("fos_user_security_check") }}" method="post">
                     <input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.generateCsrfToken('authenticate') }}" />
 
                     <div class="form-group">
@@ -37,8 +37,13 @@
                     </div>
 
                     <input type="submit" id="_submit" name="_submit" value="{{ 'security.login.submit'|trans({}, 'FOSUserBundle') }}" class="btn" />
+                    <div id="status"></div>
+                </form>
+                <form id="facebook-login-form" action="" method="post">
+                    <input type="hidden" name="_fb_id" value="" />
                 </form>
             </div>
+            
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
             </div>

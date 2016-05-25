@@ -11,7 +11,7 @@ a {
 }
 
 h1 {
-    //color : #33ccaf;
+    /*color : #33ccaf;*/
     color : #444485;
     font-family: 'Sue Ellen Francisco', cursive;
     text-transform: uppercase;
@@ -72,7 +72,6 @@ h1 {
 }
 
 #etb-picture{
-    //border: 1px black solid; 
     height: 250px;
     background-size: cover;
 }
