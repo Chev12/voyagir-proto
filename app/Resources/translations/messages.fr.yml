@@ -15,6 +15,7 @@ home:
     title: Accueil
     etb_list: Nouveaux établissements
     connection: Connexion
+    facebook_login: Se connecter avec Facebook
 
 establishment:
     id: Numéro

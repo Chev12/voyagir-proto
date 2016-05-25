@@ -8,10 +8,17 @@
                 <h4 class="modal-title">{{ 'home.connection'|trans }}</h4>
             </div>
             <div class="modal-body">
+                <div>
+                    <a class="btn btn-block btn-social btn-lg btn-facebook" onclick="FB.login();">
+                        <span class="fa fa-facebook"></span> 
+                        {{ 'home.facebook_login'|trans }}
+                    </a>
+                </div>
+                <hr />
                 {#% if error %}
                     <div>{{ error.messageKey|trans(error.messageData, 'security') }}</div>
                 {% endif %#}
-                <form class="form-inline" action="{{ path("fos_user_security_check") }}" method="post">
+                <form class="form" action="{{ path("fos_user_security_check") }}" method="post">
                     <input type="hidden" name="_csrf_token" value="{{ fos_csrf_provider.generateCsrfToken('authenticate') }}" />
 
                     <div class="form-group">

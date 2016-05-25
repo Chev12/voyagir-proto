@@ -15,6 +15,7 @@ home:
     title: Homepage
     etb_list: Newly validated establishments
     connection: Connection
+    facebook_login: Sign in with Facebook
 
 establishment:
     id: Number

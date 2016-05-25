@@ -16,6 +16,12 @@
             {% if is_granted('edit', establishment) %}
                 <a href="{{ path("etb_manage_update", { '_id' : establishment.id }) }}">{{ 'establishment.manage.link'|trans}}</a>
             {% endif %}
+            <div
+                class="fb-like"
+                data-share="true"
+                data-width="450"
+                data-show-faces="true">
+            </div>
             <h2>{{ 'establishment.desc'|trans}}</h2>
             <p>{{ establishment.description }}</p>
             <h2>{{ 'establishment.custom_commit'|trans}}</h2>
