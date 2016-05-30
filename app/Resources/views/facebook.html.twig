@@ -1,4 +1,4 @@
-
+<script>
 // This is called with the results from from FB.getLoginStatus().
 function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -10,15 +10,18 @@ function statusChangeCallback(response) {
     if (response.status === 'connected') {
         // Logged into your app and Facebook.
         fbLoginSuccess();
-    } else if (response.status === 'not_authorized') {
-        // The person is logged into Facebook, but not your app.
-        document.getElementById('status').innerHTML = 'Please log ' +
-          'into this app.';
     } else {
-        // The person is not logged into Facebook, so we're not sure if
-        // they are logged into this app or not.
-        document.getElementById('status').innerHTML = 'Please log ' +
-          'into Facebook.';
+        fbLoginFailed();
+        if (response.status === 'not_authorized') {
+            // The person is logged into Facebook, but not your app.
+            document.getElementById('status').innerHTML = 'Please log ' +
+              'into this app.';
+        } else {
+            // The person is not logged into Facebook, so we're not sure if
+            // they are logged into this app or not.
+            document.getElementById('status').innerHTML = 'Please log ' +
+              'into Facebook.';
+        }
     }
 }
 
@@ -59,9 +62,9 @@ window.fbAsyncInit = function() {
     //
     // These three cases are handled in the callback function.
 
-    FB.getLoginStatus(function(response) {
+    /*FB.getLoginStatus(function(response) {
         statusChangeCallback(response);
-    });
+    });*/
 
 };
 
@@ -77,19 +80,31 @@ window.fbAsyncInit = function() {
 // Here we run a very simple test of the Graph API after login is
 // successful.  See statusChangeCallback() for when this call is made.
 function fbLoginSuccess() {
-    /*console.log('Welcome!  Fetching your information.... ');
-    FB.api('/me', function(response) {
-        console.log('Successful login for: ' + response.name);
-        document.getElementById('status').innerHTML =
-          'Thanks for logging in, ' + response.name + '!';
-    });*/
     FB.api('/me', function(response) {
         var name = response['name'];
         var id = response['id'];
         console.log("id = " + id + ", name = " + name);
-        $("#facebook-login-form input[name='_fb_id']").val(id);
-        //$("#facebook-login-form").submit();
     });
+    document.location = "{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}";
+}
+
+function fbLoginFailed() {
+    console.log("login failed");
+    FB.login(function(response) {
+        if (response.authResponse) {
+            document.location = "{{ url("hwi_oauth_service_redirect", {service: "facebook"}) }}";
+        } else {
+            alert('Cancelled.');
+        }
+    }, {scope: 'email'});
+}
+
+function onSignIn(googleUser) {
+    var profile = googleUser.getBasicProfile();
+    console.log('ID: ' + profile.getId()); // Do not send to your backend! Use an ID token instead.
+    console.log('Name: ' + profile.getName());
+    console.log('Image URL: ' + profile.getImageUrl());
+    console.log('Email: ' + profile.getEmail());
 }
 
 $(document).ready(function() 
@@ -97,6 +112,7 @@ $(document).ready(function()
     $("#facebook-login-button").click(function(){
         FB.login(function(response){
             statusChangeCallback(response);
-        }, {scope: 'public_profile'});
+        }, {scope: 'public_profile, email'});
     });
 });
+</script>

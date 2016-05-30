@@ -29,6 +29,22 @@ class BaseUser extends User
      * @ORM\Column(name="is_owner", type="integer")
      */
     private $isOwner;
+    
+    /**
+     *
+     * @var string
+     * 
+     * @ORM\Column(name="facebook_id", type="string", length=255)
+     */
+    private $facebookID;
+    
+    /**
+     *
+     * @var string
+     * 
+     * @ORM\Column(name="google_id", type="string", length=255)
+     */
+    private $googleID;
 
     /**
      * @var \Doctrine\Common\Collections\Collection
@@ -143,5 +159,101 @@ class BaseUser extends User
     public function getEstablishmentsOwned()
     {
         return $this->establishmentsOwned;
+    }
+
+    /**
+     * Set isOwner
+     *
+     * @param integer $isOwner
+     *
+     * @return BaseUser
+     */
+    public function setIsOwner($isOwner)
+    {
+        $this->isOwner = $isOwner;
+
+        return $this;
+    }
+
+    /**
+     * Get isOwner
+     *
+     * @return integer
+     */
+    public function getIsOwner()
+    {
+        return $this->isOwner;
+    }
+
+    /**
+     * Add establishmentsOwned
+     *
+     * @param \AppBundle\Entity\Establishment $establishmentsOwned
+     *
+     * @return BaseUser
+     */
+    public function addEstablishmentsOwned(\AppBundle\Entity\Establishment $establishmentsOwned)
+    {
+        $this->establishmentsOwned[] = $establishmentsOwned;
+
+        return $this;
+    }
+
+    /**
+     * Remove establishmentsOwned
+     *
+     * @param \AppBundle\Entity\Establishment $establishmentsOwned
+     */
+    public function removeEstablishmentsOwned(\AppBundle\Entity\Establishment $establishmentsOwned)
+    {
+        $this->establishmentsOwned->removeElement($establishmentsOwned);
+    }
+
+    /**
+     * Set facebookId
+     *
+     * @param string $facebookId
+     *
+     * @return BaseUser
+     */
+    public function setFacebookId($facebookId)
+    {
+        $this->facebookID = $facebookId;
+
+        return $this;
+    }
+
+    /**
+     * Get facebookId
+     *
+     * @return string
+     */
+    public function getFacebookId()
+    {
+        return $this->facebookID;
+    }
+    
+    /**
+     * Set googleId
+     *
+     * @param string $googleId
+     *
+     * @return BaseUser
+     */
+    public function setGoogleId($googleId)
+    {
+        $this->googleID = $googleId;
+
+        return $this;
+    }
+
+    /**
+     * Get googleId
+     *
+     * @return string
+     */
+    public function getGoogleId()
+    {
+        return $this->googleID;
     }
 }

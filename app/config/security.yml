@@ -32,7 +32,20 @@ security:
                 path:   fos_user_security_logout
                 target: homepage
             anonymous:    true
-            
+
+            oauth:
+                resource_owners:
+                    facebook:           "/login/check-facebook"
+                    google:             "/login/check-google"
+                login_path:        /login
+                use_forward:       false
+                failure_path:      /login
+                check_path: /connect_check
+                provider: fos_userbundle
+
+                oauth_user_provider:
+                    service: app.provider.oauth
+
     access_control:
         - { path: ^/%locale%/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
         - { path: ^/%locale%/register, role: IS_AUTHENTICATED_ANONYMOUSLY }

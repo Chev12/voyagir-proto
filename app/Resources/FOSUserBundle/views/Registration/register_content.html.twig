@@ -1,8 +1,41 @@
+<div>
+    <a href="{{ path('hwi_oauth_service_redirect', {'service': 'facebook' }) }}" 
+       class="btn btn-block btn-social btn-lg btn-facebook">
+        <span class="fa fa-facebook"></span> 
+        {{ 'home.facebook_login'|trans }}
+    </a>
+</div>
+<br />
+<div>
+    <a href="{{ url("hwi_oauth_service_redirect", {service: "google"}) }}"
+       id="google-login-button" class="btn btn-block btn-social btn-lg btn-google">
+        <span class="fa"><img src="{{ asset("img/g-logo.png") }}" style="width:30px; padding-bottom: 7px;" /></span> 
+        {{ 'home.google_login'|trans }}
+    </a>
+</div>
+<hr />
 {% trans_default_domain 'FOSUserBundle' %}
-
+        
 {{ form_start(form, {'method': 'post', 'action': path('fos_user_registration_register'), 'attr': {'class': 'fos_user_registration_register'}}) }}
-    {{ form_widget(form) }}
+    {##}
+    {{ form_row(form.email) }}
+    {{ form_row(form.username) }}
+    {{ form_row(form.plainPassword.first, {'attr': {'pattern': '(?=.*[a-z])(?=.*[A-Z]).{6,}'}} ) }}
+    <div id="pwd_error1" class="pwd_error row">
+         <div class="col-sm-2"></div><div class="col-sm-10">{{ 'register.password.error1'|trans({}, 'messages') }}</div>
+    </div>
+    <div id="pwd_error2" class="pwd_error row">
+        <div class="col-sm-2"></div><div class="col-sm-10">{{ 'register.password.error2'|trans({}, 'messages') }}</div>
+    </div>
+    <div id="pwd_error3" class="pwd_error row">
+        <div class="col-sm-2"></div><div class="col-sm-10">{{ 'register.password.error3'|trans({}, 'messages') }}</div>
+    </div>
+    {{ form_row(form.plainPassword.second) }}
     <div>
         <input type="submit" value="{{ 'registration.submit'|trans }}" />
     </div>
 {{ form_end(form) }}
+
+<script>
+
+</script>

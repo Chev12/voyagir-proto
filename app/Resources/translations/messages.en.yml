@@ -16,6 +16,13 @@ home:
     etb_list: Newly validated establishments
     connection: Connection
     facebook_login: Sign in with Facebook
+    google_login: Sign in with Google
+    
+register:
+    password:
+        error1: Password must contain at least 1 lower case letter
+        error2: Password must contain at least 1 upper case letter
+        error3  : Password must contain at least 6 characters
 
 establishment:
     id: Number

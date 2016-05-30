@@ -11,3 +11,4 @@
 /web/bundles/
 /nbproject/
 /src/test/
+/src/AppBundle/Security/TokenAuthenticator.php

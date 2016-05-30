@@ -22,3 +22,20 @@ fos_user:
     requirements:
         _locale: en|fr
     defaults: { _locale: en}
+
+hwi_oauth_connect_service:
+    path: /
+
+hwi_oauth_redirect:
+    resource: "@HWIOAuthBundle/Resources/config/routing/redirect.xml"
+    prefix:   /connect
+ 
+hwi_oauth_login:
+    resource: "@HWIOAuthBundle/Resources/config/routing/login.xml"
+    prefix:   /login
+
+facebook_login:
+    path: /login/check-facebook
+
+google_login:
+    path: /login/check-google

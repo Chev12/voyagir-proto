@@ -30,3 +30,10 @@ services:
         class: AppBundle\Controller\Form\ProfileFormType
         tags:
             - { name: form, alias: app_user_profile }
+
+    fos_user.registration.form:
+        class: FOS\UserBundle\Form\Type\RegistrationFormType
+        
+    app.provider.oauth:
+        class: AppBundle\Security\OAuthUserProvider
+        arguments: [@fos_user.user_manager,{facebook: facebookID, google: googleID}]

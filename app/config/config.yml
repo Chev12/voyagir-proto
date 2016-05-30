@@ -40,7 +40,6 @@ twig:
         "%kernel.root_dir%/Resources/views/establishment": establishment
     form:
         resources: ['bootstrap_3_horizontal_layout.html.twig']
-        # resources: ['bootstrap_3_horizontal_layout.html.twig']
     globals:
         fos_csrf_provider: "@form.csrf_provider"
 
@@ -82,10 +81,12 @@ doctrine:
 swiftmailer:
     transport: "%mailer_transport%"
     host:      "%mailer_host%"
+    port:      "%mailer_port%"
     username:  "%mailer_user%"
     password:  "%mailer_password%"
     spool:     { type: memory }
 
+# FOS User 
 fos_user:
     db_driver: orm
     firewall_name: main
@@ -93,7 +94,43 @@ fos_user:
     profile:
         form:
             type: AppBundle\Controller\Form\ProfileFormType
-    
+    registration:
+        confirmation:
+            enabled:    true
+    from_email:
+        address:        do_not_respond_register@voyagir.org
+        sender_name:    Voy'agir
+
+# OAuth
+hwi_oauth:
+    connect:
+        account_connector: app.provider.oauth
+    firewall_name: main
+    http_client:
+        verify_peer: false
+    fosub:
+        username_iterations: 30
+        properties:
+            facebook: facebook_id
+            google: google_id
+            twitter: twitter_id
+    resource_owners:
+        # Facebook Access
+        facebook:
+            type:               facebook
+            client_id:          1101303959940546
+            client_secret:      e9bfd3028e868e23b6e91e92e72eb6bf
+            scope:              "email"
+            infos_url:          "https://graph.facebook.com/me?fields=id,name,email,picture.type(large)"
+            paths:
+                email:          email
+        google:
+            type:           google
+            client_id:      504565395085-idsmt0i7ojsbneaj4t3kv88dp8ell30l.apps.googleusercontent.com
+            client_secret:  gi_im0-LF_eMcnVANa66-aWR
+            scope:          "email profile"
+
+# Vich
 vich_uploader:
     db_driver: orm
     mappings:

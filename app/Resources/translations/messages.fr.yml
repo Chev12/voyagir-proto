@@ -16,6 +16,13 @@ home:
     etb_list: Nouveaux établissements
     connection: Connexion
     facebook_login: Se connecter avec Facebook
+    google_login: Se connecter avec Google
+    
+register:
+    password:
+        error1: Le mot de passe doit contenir au moins 1 lettre minuscule
+        error2: Le mot de passe doit contenir au moins 1 lettre majuscule
+        error3: Le mot de passe doit contenir au moins 6 characters
 
 establishment:
     id: Numéro
